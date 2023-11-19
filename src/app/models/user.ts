@@ -1,8 +1,8 @@
 import { List } from "./list";
 
 export interface User {
-  id: string;
+  id?: string;
   name: string;
   email: string;
-  lists: List[];
+  lists?: List[];
 }

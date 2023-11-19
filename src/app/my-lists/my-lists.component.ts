@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-my-lists',
@@ -9,9 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 export class MyListsComponent implements OnInit {
   email: string | null = '';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private firebase: FirebaseService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.email = this.route.snapshot.queryParamMap.get('email');
+    let users = await this.firebase.getUsers();
+    console.log("users: ", users[0]);
   }
 }

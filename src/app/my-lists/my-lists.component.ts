@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddListComponent } from './add-list/add-list.component';
+import { List } from '../models/list';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-my-lists',
@@ -11,6 +13,8 @@ import { AddListComponent } from './add-list/add-list.component';
 })
 export class MyListsComponent implements OnInit {
   email: string = '';
+  lists: List[] = [];
+  user: User | null | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,14 +24,19 @@ export class MyListsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.email = this.route.snapshot.queryParamMap.get('email') ?? '';
-    this.createUserIfNeeded(this.email);
+    this.user = await this.createUserIfNeeded(this.email);
+    if (!this.user) {
+      return;
+    }
+    console.log(this.user);
   }
 
-  async createUserIfNeeded(email: string) {
+  async createUserIfNeeded(email: string): Promise<User | null> {
     let userExists = await this.firebase.userExists(this.email);
     if (!userExists) {
-      this.firebase.addUser(this.email);
+      await this.firebase.addUser(this.email);
     }
+    return await this.firebase.getUser(this.email);
   }
 
   openDialog(): void {

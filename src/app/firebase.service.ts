@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { app } from 'src/environments/environment';
-import { collection, getDocs, getFirestore, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  addDoc,
+  query,
+  where,
+} from 'firebase/firestore';
 import { User } from './models/user';
 import { List } from './models/list';
 import { Item } from './models/item';
@@ -61,6 +68,41 @@ export class FirebaseService {
     });
   }
 
+  async getUser(email: string): Promise<User | null> {
+    const usersCol = collection(db, 'users');
+    const q = query(usersCol, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const user = doc.data() as User;
+      user.id = doc.id;
+      const userLists = collection(db, `users/${doc.id}/lists`);
+      const listsSnapshot = await getDocs(userLists);
+      user.lists = await Promise.all(
+        listsSnapshot.docs.map(async (doc) => {
+          const list = doc.data() as List;
+          list.id = doc.id;
+          const listItems = collection(
+            db,
+            `users/${user.id}/lists/${list.id}/items`
+          );
+          const itemsSnapshot = await getDocs(listItems);
+          list.items = await Promise.all(
+            itemsSnapshot.docs.map(async (doc) => {
+              const item = doc.data() as Item;
+              item.id = doc.id;
+              return item;
+            })
+          );
+          return list;
+        })
+      );
+      return user;
+    }
+
+    return null;
+  }
+
   async addUser(email: string): Promise<void> {
     let newUser: User = { email: email, name: email };
     const usersCol = collection(db, 'users');
@@ -71,5 +113,19 @@ export class FirebaseService {
     let newList: List = { name: listName };
     const listsCol = collection(db, `users/${email}/lists`);
     await addDoc(listsCol, newList);
+  }
+
+  async getLists(user: User): Promise<List[]> {
+    const listsCol = collection(db, `users/${user.id}/lists`);
+    const listsSnapshot = await getDocs(listsCol);
+    const lists = await Promise.all(
+      listsSnapshot.docs.map(async (doc) => {
+        const list = doc.data() as List;
+        list.id = doc.id;
+        return list;
+      })
+    );
+
+    return lists;
   }
 }

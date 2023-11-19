@@ -5,3 +5,7 @@
     <input matInput placeholder="Enter a name..."/>
   </mat-form-field>
 </mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true">Add</button>
+</mat-dialog-actions>

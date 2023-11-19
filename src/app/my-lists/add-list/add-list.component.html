@@ -2,10 +2,10 @@
 <mat-dialog-content>
   <mat-form-field>
     <mat-label>List Name</mat-label>
-    <input matInput placeholder="Enter a name..."/>
+    <input matInput placeholder="Enter a name..." #listName/>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true">Add</button>
+  <button mat-button [mat-dialog-close]="true" (click)="addList(listName.value)">Add</button>
 </mat-dialog-actions>

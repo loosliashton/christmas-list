@@ -43,7 +43,11 @@ export class MyListsComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AddListComponent);
+    const dialogRef = this.dialog.open(AddListComponent, {
+      data: {
+        user: this.user,
+      },
+    });
   }
 
   deleteList(listId: string): void {

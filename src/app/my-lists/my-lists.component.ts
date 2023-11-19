@@ -28,6 +28,9 @@ export class MyListsComponent implements OnInit {
     if (!this.user) {
       return;
     }
+    if (this.user.lists) {
+      this.lists = this.user.lists;
+    }
     console.log(this.user);
   }
 
@@ -41,5 +44,9 @@ export class MyListsComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddListComponent);
+  }
+
+  deleteList(listId: string): void {
+    //this.firebase.deleteList(this.email, listId);
   }
 }

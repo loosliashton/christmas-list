@@ -1,5 +1,15 @@
 <div class="center">
   <h2>{{ email }}'s Lists</h2>
+  <div class="lists">
+    <div class="list" *ngFor="let list of lists">
+      <div class="list-header">
+        <h3>{{ list.name }}</h3>
+        <button class="round-button red" (click)="deleteList(list.id!)">
+          <i class="fa-solid fa-trash fa-lg white-icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="buttons">
     <button class="round-button green" (click)="openDialog()">
       <i class="fa-solid fa-plus fa-xl white-icon"></i>

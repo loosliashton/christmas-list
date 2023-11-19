@@ -110,7 +110,7 @@ export class FirebaseService {
   }
 
   async addList(user: User, listName: string): Promise<void> {
-    let newList: List = { name: listName };
+    let newList: List = { name: listName, creator: user.id! };
     const listsCol = collection(db, `users/${user.id}/lists`);
     await addDoc(listsCol, newList);
   }

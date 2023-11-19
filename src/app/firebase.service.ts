@@ -7,10 +7,11 @@ import {
   addDoc,
   query,
   where,
+  doc,
+  updateDoc,
 } from 'firebase/firestore';
 import { User } from './models/user';
 import { List } from './models/list';
-import { Item } from './models/item';
 
 const db = getFirestore(app);
 
@@ -28,29 +29,6 @@ export class FirebaseService {
       userSnapshot.docs.map(async (doc) => {
         const user = doc.data() as User;
         user.id = doc.id;
-        // Get the lists for each user
-        const userLists = collection(db, `users/${doc.id}/lists`);
-        const listsSnapshot = await getDocs(userLists);
-        user.lists = await Promise.all(
-          listsSnapshot.docs.map(async (doc) => {
-            const list = doc.data() as List;
-            list.id = doc.id;
-            // Get the items for each list
-            const listItems = collection(
-              db,
-              `users/${user.id}/lists/${list.id}/items`
-            );
-            const itemsSnapshot = await getDocs(listItems);
-            list.items = await Promise.all(
-              itemsSnapshot.docs.map(async (doc) => {
-                const item = doc.data() as Item;
-                item.id = doc.id;
-                return item;
-              })
-            );
-            return list;
-          })
-        );
         return user;
       })
     );
@@ -76,27 +54,6 @@ export class FirebaseService {
       const doc = querySnapshot.docs[0];
       const user = doc.data() as User;
       user.id = doc.id;
-      const userLists = collection(db, `users/${doc.id}/lists`);
-      const listsSnapshot = await getDocs(userLists);
-      user.lists = await Promise.all(
-        listsSnapshot.docs.map(async (doc) => {
-          const list = doc.data() as List;
-          list.id = doc.id;
-          const listItems = collection(
-            db,
-            `users/${user.id}/lists/${list.id}/items`
-          );
-          const itemsSnapshot = await getDocs(listItems);
-          list.items = await Promise.all(
-            itemsSnapshot.docs.map(async (doc) => {
-              const item = doc.data() as Item;
-              item.id = doc.id;
-              return item;
-            })
-          );
-          return list;
-        })
-      );
       return user;
     }
 
@@ -111,21 +68,31 @@ export class FirebaseService {
 
   async addList(user: User, listName: string): Promise<void> {
     let newList: List = { name: listName, creator: user.id! };
-    const listsCol = collection(db, `users/${user.id}/lists`);
-    await addDoc(listsCol, newList);
+    const listsCol = collection(db, `lists`);
+    const docRef = await addDoc(listsCol, newList);
+    const docId = docRef.id;
+
+    // Update the user's lists array in the database
+    const userDocRef = doc(db, 'users', user.id!);
+    await updateDoc(userDocRef, {
+      lists: [...(user.lists ?? []), docId],
+    });
   }
 
   async getLists(user: User): Promise<List[]> {
-    const listsCol = collection(db, `users/${user.id}/lists`);
-    const listsSnapshot = await getDocs(listsCol);
-    const lists = await Promise.all(
-      listsSnapshot.docs.map(async (doc) => {
+    let listIds = user.lists ?? [];
+    let lists: List[] = [];
+    for (let listId of listIds) {
+      const listCol = collection(db, `lists`);
+      const q = query(listCol, where('__name__', '==', listId));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
         const list = doc.data() as List;
         list.id = doc.id;
-        return list;
-      })
-    );
-
+        lists.push(list);
+      }
+    }
     return lists;
   }
 }

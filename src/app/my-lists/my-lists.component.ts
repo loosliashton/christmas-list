@@ -29,7 +29,7 @@ export class MyListsComponent implements OnInit {
       return;
     }
     if (this.user.lists) {
-      this.lists = this.user.lists;
+      this.lists = await this.firebase.getLists(this.user);
     }
     console.log(this.user);
   }

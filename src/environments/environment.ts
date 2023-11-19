@@ -1,6 +1,4 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+import { initializeApp } from "firebase/app";
 
 export const environment = {
   production: false
@@ -14,3 +12,20 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+
+// Import the functions you need from the SDKs you need
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDxZIKtuQ3gFXnAjWSVnmgh51pPxmSPjmA",
+  authDomain: "christmas-list-4b180.firebaseapp.com",
+  projectId: "christmas-list-4b180",
+  storageBucket: "christmas-list-4b180.appspot.com",
+  messagingSenderId: "1064787530858",
+  appId: "1:1064787530858:web:27f5f984d09486586d6613"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);

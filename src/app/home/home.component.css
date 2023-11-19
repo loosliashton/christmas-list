@@ -1,0 +1,21 @@
+.title {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.buttons {
+  margin-top: 3%;
+}
+
+.row-layout {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.row-layout > * {
+  margin-right: 10px;
+}
+

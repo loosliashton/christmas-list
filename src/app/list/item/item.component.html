@@ -1,6 +1,9 @@
 <h2 mat-dialog-title>
   <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
 </h2>
+<mat-dialog-content>
+  <p>{{ item.details }}</p>
+</mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
   <button
@@ -10,7 +13,6 @@
     [mat-dialog-close]="true"
     (click)="togglePurchase()"
   >
-    {{ item.purchased ? "Mark as Unpurchased" : "Mark as Purchased"}}
+    {{ item.purchased ? "Mark as Unpurchased" : "Mark as Purchased" }}
   </button>
 </mat-dialog-actions>
-

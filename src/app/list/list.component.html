@@ -1,4 +1,5 @@
 <div class="center">
+  <p *ngIf="!spoilers">Share your list by sending its URL.</p>
   <h3>{{ creator?.name }}</h3>
   <h1>{{ list?.name }}</h1>
   <div class="list" *ngIf="!spoilers">

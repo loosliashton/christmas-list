@@ -1,12 +1,14 @@
 <div class="center">
+  <h3>{{ creator?.name }}</h3>
   <h1>{{ list?.name }}</h1>
   <div class="list">
-    <div
-      *ngFor="let item of list?.items"
-      class="item"
-      (click)="openItemModal(item)"
-    >
-      <div class="item-name">{{ item.name }}</div>
+    <div *ngFor="let item of list?.items" class="list-row">
+      <div class="item" (click)="openItemModal(item)">
+        <div class="item-name">{{ item.name }}</div>
+      </div>
+      <button class="round-button-small red" (click)="deleteItem(item.id!)">
+        <i class="fa-solid fa-trash fa-lg white-icon"></i>
+      </button>
     </div>
   </div>
   <div class="buttons">

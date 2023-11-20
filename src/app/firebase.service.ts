@@ -9,6 +9,7 @@ import {
   where,
   doc,
   updateDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import { User } from './models/user';
 import { List } from './models/list';
@@ -127,5 +128,10 @@ export class FirebaseService {
   async addToList(item: Item, listId: string): Promise<void> {
     const itemsCol = collection(db, `lists/${listId}/items`);
     await addDoc(itemsCol, item);
+  }
+
+  async removeFromList(listId: string, itemId: string): Promise<void> {
+    const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
+    await deleteDoc(itemDocRef);
   }
 }

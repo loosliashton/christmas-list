@@ -13,6 +13,13 @@ button {
   height: 75px;
 }
 
+.round-button-small {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  margin-left: 10px;
+}
+
 .submit-button {
   width: 35px;
   height: 30px;
@@ -21,6 +28,10 @@ button {
 
 .green {
   background-color: green;
+}
+
+.red {
+  background-color: red;
 }
 
 .green:focus,
@@ -45,10 +56,12 @@ button {
   align-items: center;
 }
 
+.list-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.dialog {
-  width: 100%;
-  background-color: red;
-}

@@ -134,4 +134,11 @@ export class FirebaseService {
     const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
     await deleteDoc(itemDocRef);
   }
+
+  async purchaseItem(listId: string, itemId: string, purchased: boolean): Promise<void> {
+    const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
+    await updateDoc(itemDocRef, {
+      purchased: purchased,
+    });
+  }
 }

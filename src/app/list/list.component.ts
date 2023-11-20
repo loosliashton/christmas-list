@@ -30,7 +30,7 @@ export class ListComponent {
 
   async ngOnInit() {
     // Check to see if the user wants spoilers
-    // this.spoilers = await this.openSpoilerPrompt();
+    this.spoilers = await this.openSpoilerPrompt();
 
     this.route.paramMap.subscribe((params) => {
       let id = params.get('id') ?? '';
@@ -54,7 +54,13 @@ export class ListComponent {
     const dialogRef = this.dialog.open(ItemComponent, {
       data: {
         item: item,
+        listId: this.list!.id,
+        spoilers: this.spoilers,
       },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.refreshData();
     });
   }
 
@@ -64,6 +70,16 @@ export class ListComponent {
         listId: this.list!.id,
       },
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.refreshData();
+    });
+  }
+
+  refreshData() {
+    this.firebase.getList(this.list!.id!).then((list) => {
+      this.list = list as List;
+    });
   }
 
   openSpoilerPrompt(): Promise<boolean> {
@@ -72,10 +88,10 @@ export class ListComponent {
   }
 
   deleteItem(itemId: string) {
-    // Confirm that the item should be deleted
     if (confirm('Are you sure you want to delete this item?')) {
       if (this.list) {
         this.firebase.removeFromList(this.list.id!, itemId);
+        this.refreshData();
       }
     }
   }

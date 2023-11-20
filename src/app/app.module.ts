@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListComponent } from './list/list.component';
 import { AddItemComponent } from './list/add-item/add-item.component';
 import { SpoilerPromptComponent } from './list/spoiler-prompt/spoiler-prompt.component';
+import { ItemComponent } from './list/item/item.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
     AddListComponent,
     AddItemComponent,
     SpoilerPromptComponent,
+    ItemComponent,
   ],
   imports: [
     BrowserModule,

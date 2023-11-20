@@ -1,7 +1,7 @@
 <div class="center">
   <h3>{{ creator?.name }}</h3>
   <h1>{{ list?.name }}</h1>
-  <div class="list">
+  <div class="list" *ngIf="!spoilers">
     <div *ngFor="let item of list?.items" class="list-row">
       <div class="item" (click)="openItemModal(item)">
         <div class="item-name">{{ item.name }}</div>
@@ -11,7 +11,14 @@
       </button>
     </div>
   </div>
-  <div class="buttons">
+  <div class="list" *ngIf="spoilers">
+    <div *ngFor="let item of list?.items" class="list-row">
+      <div class="item" (click)="openItemModal(item)">
+        <div class="item-name">{{ item.name }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="buttons" *ngIf="!spoilers">
     <button class="round-button green" (click)="openAddModal()">
       <i class="fa-solid fa-plus fa-xl white-icon"></i>
     </button>

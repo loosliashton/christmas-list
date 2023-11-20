@@ -65,7 +65,7 @@ export class FirebaseService {
   }
 
   async addUser(email: string): Promise<string> {
-    let newUser: User = { email: email, name: email };
+    let newUser: User = { email: email.toLowerCase().trim(), name: email };
     const usersCol = collection(db, 'users');
     const docRef = await addDoc(usersCol, newUser);
     return docRef.id;

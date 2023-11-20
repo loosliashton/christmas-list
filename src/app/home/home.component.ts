@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   goToMyLists(email: string) {
     this.badEmail = false;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    email = email.toLowerCase().trim();
     
     if (emailPattern.test(email)) {
       this.router.navigate(['/my-lists'], { queryParams: { email } });

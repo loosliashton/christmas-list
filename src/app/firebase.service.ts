@@ -123,4 +123,9 @@ export class FirebaseService {
 
     return null;
   }
+
+  async addToList(item: Item, listId: string): Promise<void> {
+    const itemsCol = collection(db, `lists/${listId}/items`);
+    await addDoc(itemsCol, item);
+  }
 }

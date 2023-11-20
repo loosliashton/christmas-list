@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AddListComponent } from './my-lists/add-list/add-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListComponent } from './list/list.component';
+import { AddItemComponent } from './list/add-item/add-item.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
     HomeComponent,
     MyListsComponent,
     AddListComponent,
+    AddItemComponent
   ],
   imports: [
     BrowserModule,

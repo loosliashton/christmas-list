@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { Item } from '../models/item';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemComponent } from './item/item.component';
+import { AddItemComponent } from './add-item/add-item.component';
 
 @Component({
   selector: 'app-list',
@@ -16,7 +17,6 @@ import { ItemComponent } from './item/item.component';
   styleUrl: './list.component.css',
 })
 export class ListComponent {
-  id: string = '';
   list: List | undefined;
   creator: User | undefined;
 
@@ -28,11 +28,11 @@ export class ListComponent {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.id = params.get('id') ?? '';
-      if (!this.id) return;
+      let id = params.get('id') ?? '';
+      if (!id) return;
 
       // Get the list from the database
-      this.firebase.getList(this.id).then((list) => {
+      this.firebase.getList(id).then((list) => {
         this.list = list as List;
         if (!list) return;
 
@@ -49,6 +49,14 @@ export class ListComponent {
     const dialogRef = this.dialog.open(ItemComponent, {
       data: {
         item: item,
+      },
+    });
+  }
+
+  openAddModal() {
+    const dialogRef = this.dialog.open(AddItemComponent, {
+      data: {
+        listId: this.list!.id,
       },
     });
   }

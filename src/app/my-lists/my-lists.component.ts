@@ -46,6 +46,10 @@ export class MyListsComponent implements OnInit {
         user: this.user,
       },
     });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      this.ngOnInit();
+    });
   }
 
   deleteList(listId: string): void {

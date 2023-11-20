@@ -13,7 +13,11 @@
   </div>
   <div class="list" *ngIf="spoilers">
     <div *ngFor="let item of list?.items" class="list-row">
-      <div class="item" (click)="openItemModal(item)">
+      <div
+        class="item"
+        (click)="openItemModal(item)"
+        [ngClass]="{ highlighted: item.purchased }"
+      >
         <div class="item-name">{{ item.name }}</div>
       </div>
     </div>

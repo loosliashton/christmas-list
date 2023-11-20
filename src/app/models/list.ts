@@ -4,5 +4,5 @@ export interface List {
   id?: string;
   name: string;
   items?: Item[];
-  creator: string; // ID
+  creatorID: string; // ID
 }

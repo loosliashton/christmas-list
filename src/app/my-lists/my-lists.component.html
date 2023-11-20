@@ -3,7 +3,9 @@
   <div class="lists">
     <div class="list" *ngFor="let list of lists">
       <div class="list-header">
-        <h4>{{ list.name }}</h4>
+        <a [routerLink]="['/list', list.id]">
+          <h4>{{ list.name }}</h4>
+        </a>
         <!-- <button class="round-button red" (click)="deleteList(list.id!)">
           <i class="fa-solid fa-trash fa-lg white-icon"></i>
         </button> -->

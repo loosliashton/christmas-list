@@ -25,21 +25,19 @@ export class MyListsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.email = this.route.snapshot.queryParamMap.get('email') ?? '';
     this.user = await this.createUserIfNeeded(this.email);
-    if (!this.user) {
-      return;
-    }
+    if (!this.user) return;
+
     if (this.user.lists) {
       this.lists = await this.firebase.getLists(this.user);
     }
-    console.log(this.user);
   }
 
   async createUserIfNeeded(email: string): Promise<User | null> {
-    let userExists = await this.firebase.userExists(this.email);
-    if (!userExists) {
-      await this.firebase.addUser(this.email);
+    let userId = await this.firebase.getUserIdByEmail(email);
+    if (!userId) {
+      userId = await this.firebase.addUser(email);
     }
-    return await this.firebase.getUser(this.email);
+    return await this.firebase.getUserById(userId);
   }
 
   openDialog(): void {

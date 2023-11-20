@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import { User } from './models/user';
 import { List } from './models/list';
+import { Item } from './models/item';
 
 const db = getFirestore(app);
 
@@ -36,19 +37,21 @@ export class FirebaseService {
     return userList;
   }
 
-  async userExists(email: string): Promise<boolean> {
-    const usersCol = collection(db, 'users');
-    const userSnapshot = await getDocs(usersCol);
-
-    return userSnapshot.docs.some((doc) => {
-      const user = doc.data() as User;
-      return user.email === email;
-    });
-  }
-
-  async getUser(email: string): Promise<User | null> {
+  async getUserIdByEmail(email: string): Promise<string> {
     const usersCol = collection(db, 'users');
     const q = query(usersCol, where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      return doc.id;
+    }
+
+    return '';
+  }
+
+  async getUserById(id: string): Promise<User | null> {
+    const usersCol = collection(db, 'users');
+    const q = query(usersCol, where('__name__', '==', id));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
@@ -60,14 +63,15 @@ export class FirebaseService {
     return null;
   }
 
-  async addUser(email: string): Promise<void> {
+  async addUser(email: string): Promise<string> {
     let newUser: User = { email: email, name: email };
     const usersCol = collection(db, 'users');
-    await addDoc(usersCol, newUser);
+    const docRef = await addDoc(usersCol, newUser);
+    return docRef.id;
   }
 
   async addList(user: User, listName: string): Promise<void> {
-    let newList: List = { name: listName, creator: user.id! };
+    let newList: List = { name: listName, creatorID: user.id! };
     const listsCol = collection(db, `lists`);
     const docRef = await addDoc(listsCol, newList);
     const docId = docRef.id;
@@ -94,5 +98,29 @@ export class FirebaseService {
       }
     }
     return lists;
+  }
+
+  async getList(listId: string): Promise<List | null> {
+    const listCol = collection(db, `lists`);
+    const q = query(listCol, where('__name__', '==', listId));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+      const list = doc.data() as List;
+      list.id = doc.id;
+      // Get the items in the list
+      const itemsCol = collection(db, `lists/${listId}/items`);
+      const itemsSnapshot = await getDocs(itemsCol);
+      list.items = await Promise.all(
+        itemsSnapshot.docs.map(async (doc) => {
+          const item = doc.data() as Item;
+          item.id = doc.id;
+          return item;
+        })
+      );
+      return list;
+    }
+
+    return null;
   }
 }

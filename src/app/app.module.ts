@@ -12,10 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AddListComponent } from './my-lists/add-list/add-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'my-lists', component: MyListsComponent },
+  { path: 'list/:id', component: ListComponent },
 ];
 
 @NgModule({

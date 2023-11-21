@@ -19,3 +19,12 @@
   margin-right: 10px;
 }
 
+.header {
+  margin: 10px;
+}
+
+.explain-text {
+  margin: 10px;
+  text-align: center;
+  color: gray;
+}

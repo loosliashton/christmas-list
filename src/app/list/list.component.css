@@ -8,7 +8,17 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  padding-right: 20px;
 }
+
+.delete-button {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  height: 50px;
+  width: 50px;
+  margin-left: -10px;
+}
+
 
 .item-name {
   font-size: 20px;;

@@ -13,13 +13,6 @@ button {
   height: 75px;
 }
 
-.round-button-small {
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  margin-left: 10px;
-}
-
 .submit-button {
   width: 35px;
   height: 30px;
@@ -58,9 +51,6 @@ button {
 
 .list-row {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 10px;
 }
 
 html, body { height: 100%; }

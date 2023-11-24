@@ -11,6 +11,10 @@ import { Item } from 'src/app/models/item';
 })
 export class AddItemComponent {
   listId: string;
+  item: Item | undefined;
+  name: string = '';
+  url: string = '';
+  details: string = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -19,6 +23,15 @@ export class AddItemComponent {
     public dialogRef: MatDialogRef<AddItemComponent>
   ) {
     this.listId = data.listId;
+    this.item = data.item;
+  }
+
+  ngOnInit(): void {
+    if (this.item) {
+      this.name = this.item.name;
+      this.url = this.item.url;
+      this.details = this.item.details;
+    }
   }
 
   async addItem(name: string, url: string, details: string) {
@@ -37,14 +50,23 @@ export class AddItemComponent {
       });
       return;
     }
-    
+
     let item: Item = {
       name: name,
       url: url,
       purchased: false,
       details: details,
     };
-    await this.firebase.addToList(item, this.listId);
+
+    if (this.item) {
+      item = this.item;
+      item.name = name;
+      item.url = url;
+      item.details = details;
+      await this.firebase.editItem(item, this.listId);
+    } else {
+      await this.firebase.addToList(item, this.listId);
+    }
     this.dialogRef.close();
   }
 }

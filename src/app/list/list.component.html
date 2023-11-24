@@ -2,15 +2,22 @@
   <p *ngIf="!spoilers">Share your list by sending its URL.</p>
   <h3>{{ creator?.name }}</h3>
   <h1>{{ list?.name }}</h1>
-  <div *ngIf="loading" style="margin-bottom: 10px;">
+  <div *ngIf="loading" style="margin-bottom: 10px">
     <div class="spinner"></div>
   </div>
   <div *ngIf="!loading">
     <div class="list" *ngIf="!spoilers">
       <div *ngFor="let item of list?.items" class="list-row">
-        <div class="item" style="padding-right: 20px;" (click)="openItemModal(item)">
+        <div
+          class="item"
+          style="border-bottom-right-radius: 0%; border-top-right-radius: 0%"
+          (click)="openItemModal(item)"
+        >
           <div class="item-name">{{ item.name }}</div>
         </div>
+        <button class="edit-button blue" (click)="editItem(item)">
+          <i class="fa-solid fa-pen fa-lg white-icon"></i>
+        </button>
         <button class="delete-button red" (click)="deleteItem(item.id!)">
           <i class="fa-solid fa-trash fa-lg white-icon"></i>
         </button>

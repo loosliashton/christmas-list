@@ -4,24 +4,39 @@
     <div class="form-field-container">
       <mat-form-field>
         <mat-label>Item Name</mat-label>
-        <input matInput placeholder="Enter a name..." #itemName />
+        <input
+          matInput
+          placeholder="Enter a name..."
+          #itemName
+          [value]="name"
+        />
       </mat-form-field>
     </div>
     <div class="form-field-container">
       <mat-form-field>
         <mat-label>Item URL</mat-label>
-        <input matInput placeholder="Enter a URL..." #itemUrl />
+        <input matInput placeholder="Enter a URL..." #itemUrl [value]="url" />
       </mat-form-field>
     </div>
     <div class="form-field-container">
       <mat-form-field>
         <mat-label>Item details</mat-label>
-        <textarea matInput placeholder="Quantity, color, etc" #itemDetails></textarea>
+        <textarea
+          matInput
+          placeholder="Quantity, color, etc"
+          #itemDetails
+          [value]="details"
+        ></textarea>
       </mat-form-field>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button (click)="addItem(itemName.value, itemUrl.value, itemDetails.value)">Add</button>
+    <button
+      mat-button
+      (click)="addItem(itemName.value, itemUrl.value, itemDetails.value)"
+    >
+      {{item ? 'Save' : 'Add'}}
+    </button>
   </mat-dialog-actions>
 </div>

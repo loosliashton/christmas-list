@@ -142,9 +142,22 @@ export class FirebaseService {
     await addDoc(itemsCol, item);
   }
 
+  async editItem(item: Item, listId: string): Promise<void> {
+    if (listId && item.id) {
+      const itemDocRef = doc(db, `lists/${listId}/items`, item.id);
+      await updateDoc(itemDocRef, {
+        name: item.name,
+        url: item.url,
+        details: item.details,
+      });
+    }
+  }
+
   async removeFromList(listId: string, itemId: string): Promise<void> {
-    const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
-    await deleteDoc(itemDocRef);
+    if (listId && itemId) {
+      const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
+      await deleteDoc(itemDocRef);
+    }
   }
 
   async purchaseItem(listId: string, itemId: string, purchased: boolean): Promise<void> {

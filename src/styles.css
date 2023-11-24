@@ -27,6 +27,10 @@ button {
   background-color: red;
 }
 
+.blue {
+  background-color: lightblue;
+}
+
 .green:focus,
 .green:hover,
 .green:active {

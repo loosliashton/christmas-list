@@ -98,4 +98,17 @@ export class ListComponent {
       }
     }
   }
+
+  editItem(item: Item) {
+    const dialogRef = this.dialog.open(AddItemComponent, {
+      data: {
+        listId: this.list!.id,
+        item: item,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.refreshData();
+    });
+  }
 }

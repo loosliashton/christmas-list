@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ItemComponent } from './item/item.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { SpoilerPromptComponent } from './spoiler-prompt/spoiler-prompt.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list',
@@ -26,7 +27,9 @@ export class ListComponent {
   constructor(
     private route: ActivatedRoute,
     private firebase: FirebaseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private titleService: Title,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -38,18 +41,24 @@ export class ListComponent {
       if (!id) return;
 
       // Get the list from the database
-      this.firebase.getList(id).then(async (list) => {
-        this.list = list as List;
-        if (!list) return;
+      this.firebase
+        .getList(id)
+        .then(async (list) => {
+          this.list = list as List;
+          if (!list) return;
 
-        // Get the creator of the list
-        await this.firebase.getUserById(list.creatorID).then((creator) => {
-          if (!creator) return;
-          this.creator = creator;
+          // Get the creator of the list
+          await this.firebase.getUserById(list.creatorID).then((creator) => {
+            if (!creator) return;
+            this.creator = creator;
+            this.titleService.setTitle(`${this.creator?.name}'s List`);
+            // Force the page name to update
+            this.cdr.detectChanges();
+          });
+        })
+        .finally(() => {
+          this.loading = false;
         });
-      }).finally(() => {
-        this.loading = false;
-      });
     });
   }
 

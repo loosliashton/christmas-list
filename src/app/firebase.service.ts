@@ -146,6 +146,7 @@ export class FirebaseService {
     if (listId && item.id) {
       const itemDocRef = doc(db, `lists/${listId}/items`, item.id);
       await updateDoc(itemDocRef, {
+        // Don't update purchased status
         name: item.name,
         url: item.url,
         details: item.details,

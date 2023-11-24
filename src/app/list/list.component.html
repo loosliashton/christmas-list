@@ -8,7 +8,7 @@
   <div *ngIf="!loading">
     <div class="list" *ngIf="!spoilers">
       <div *ngFor="let item of list?.items" class="list-row">
-        <div class="item" (click)="openItemModal(item)">
+        <div class="item" style="padding-right: 20px;" (click)="openItemModal(item)">
           <div class="item-name">{{ item.name }}</div>
         </div>
         <button class="delete-button red" (click)="deleteItem(item.id!)">
@@ -34,3 +34,9 @@
     </button>
   </div>
 </div>
+
+<footer class="footer" *ngIf="spoilers">
+  <a href="/">
+    <p>Click here to create your own list</p>
+  </a>
+</footer>

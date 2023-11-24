@@ -8,7 +8,6 @@
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  padding-right: 20px;
 }
 
 .delete-button {
@@ -19,9 +18,8 @@
   margin-left: -10px;
 }
 
-
 .item-name {
-  font-size: 20px;;
+  font-size: 20px;
 }
 
 .list {

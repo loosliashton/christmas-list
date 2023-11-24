@@ -1,5 +1,6 @@
 <h2 mat-dialog-title>
-  <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+  <a *ngIf="item.url" href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+  <span *ngIf="!item.url">{{ item.name }}</span>
 </h2>
 <mat-dialog-content>
   <p>{{ item.details }}</p>

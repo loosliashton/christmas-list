@@ -36,15 +36,15 @@ export class AddItemComponent {
 
   async addItem(name: string, url: string, details: string) {
     // Validate fields
-    if (!name || !url) {
-      this.snackbar.open('Please enter a name and URL', 'Close', {
+    if (!name) {
+      this.snackbar.open('Please enter a name', 'Close', {
         duration: 3000,
       });
       return;
     }
 
     // Check if URL is valid
-    if (!url.startsWith('http')) {
+    if (url && !url.startsWith('http')) {
       this.snackbar.open('Please enter a valid URL', 'Close', {
         duration: 3000,
       });

@@ -9,3 +9,7 @@
 .header h2 {
   text-align: center;
 }
+
+.link {
+  cursor: pointer;
+}

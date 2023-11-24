@@ -21,6 +21,7 @@ export class ListComponent {
   list: List | undefined;
   creator: User | undefined;
   spoilers: boolean = false;
+  loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,15 +38,17 @@ export class ListComponent {
       if (!id) return;
 
       // Get the list from the database
-      this.firebase.getList(id).then((list) => {
+      this.firebase.getList(id).then(async (list) => {
         this.list = list as List;
         if (!list) return;
 
         // Get the creator of the list
-        this.firebase.getUserById(list.creatorID).then((creator) => {
+        await this.firebase.getUserById(list.creatorID).then((creator) => {
           if (!creator) return;
           this.creator = creator;
         });
+      }).finally(() => {
+        this.loading = false;
       });
     });
   }

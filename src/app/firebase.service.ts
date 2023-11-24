@@ -95,6 +95,18 @@ export class FirebaseService {
         const doc = querySnapshot.docs[0];
         const list = doc.data() as List;
         list.id = doc.id;
+
+        // Get the items in the list
+        const itemsCol = collection(db, `lists/${listId}/items`);
+        const itemsSnapshot = await getDocs(itemsCol);
+        list.items = await Promise.all(
+          itemsSnapshot.docs.map(async (doc) => {
+            const item = doc.data() as Item;
+            item.id = doc.id;
+            return item;
+          })
+        );
+
         lists.push(list);
       }
     }

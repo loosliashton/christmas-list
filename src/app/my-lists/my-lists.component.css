@@ -10,6 +10,18 @@
   text-align: center;
 }
 
-.link {
-  cursor: pointer;
+.add-list-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.list-header {
+  display: flex;
+}
+
+.list-header p {
+  margin-left: 10px;
 }

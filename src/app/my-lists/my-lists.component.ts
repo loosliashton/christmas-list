@@ -15,6 +15,7 @@ export class MyListsComponent implements OnInit {
   email: string = '';
   lists: List[] = [];
   user: User | null | undefined;
+  loading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +31,8 @@ export class MyListsComponent implements OnInit {
     if (this.user.lists) {
       this.lists = await this.firebase.getLists(this.user);
     }
+
+    this.loading = false;
   }
 
   async createUserIfNeeded(email: string): Promise<User | null> {

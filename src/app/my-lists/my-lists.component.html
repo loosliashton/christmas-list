@@ -1,6 +1,9 @@
 <div class="center">
   <div class="header">
-    <h2>{{ email }}'s Lists</h2>
+    <button class="edit-button green" (click)="changeName()">
+      <i class="fa-solid fa-pen fa-sm white-icon"></i>
+    </button>
+    <h2>{{ user?.name }}'s Lists</h2>
   </div>
   <div *ngIf="loading" class="loading">
     <div class="spinner"></div>

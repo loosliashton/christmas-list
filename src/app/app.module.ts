@@ -17,6 +17,7 @@ import { ListComponent } from './list/list.component';
 import { AddItemComponent } from './list/add-item/add-item.component';
 import { SpoilerPromptComponent } from './list/spoiler-prompt/spoiler-prompt.component';
 import { ItemComponent } from './list/item/item.component';
+import { ChangeNameComponent } from './my-lists/change-name/change-name.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
     AddItemComponent,
     SpoilerPromptComponent,
     ItemComponent,
+    ChangeNameComponent,
   ],
   imports: [
     BrowserModule,

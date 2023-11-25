@@ -167,4 +167,11 @@ export class FirebaseService {
       purchased: purchased,
     });
   }
+
+  changeName(id: string, name: string) {
+    const userDocRef = doc(db, 'users', id);
+    updateDoc(userDocRef, {
+      name: name,
+    });
+  }
 }

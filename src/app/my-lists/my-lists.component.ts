@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddListComponent } from './add-list/add-list.component';
 import { List } from '../models/list';
 import { User } from '../models/user';
+import { ChangeNameComponent } from './change-name/change-name.component';
 
 @Component({
   selector: 'app-my-lists',
@@ -55,7 +56,16 @@ export class MyListsComponent implements OnInit {
     });
   }
 
-  deleteList(listId: string): void {
-    //this.firebase.deleteList(this.email, listId);
+  changeName() {
+    const dialogRef = this.dialog.open(ChangeNameComponent, {
+      data: {
+        id: this.user?.id,
+        name: this.user?.name,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      this.ngOnInit();
+    });
   }
 }

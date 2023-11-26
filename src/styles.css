@@ -31,6 +31,10 @@ button {
   background-color: lightblue;
 }
 
+.cyan {
+  background-color: #0dcaf0;
+}
+
 .green:focus,
 .green:hover,
 .green:active {

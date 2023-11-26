@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 
 export const environment = {
-  production: true
+  production: true,
+  openAIKey: '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',
 };
 
 // Your web app's Firebase configuration

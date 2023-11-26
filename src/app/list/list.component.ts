@@ -10,6 +10,7 @@ import { ItemComponent } from './item/item.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { SpoilerPromptComponent } from './spoiler-prompt/spoiler-prompt.component';
 import { Title } from '@angular/platform-browser';
+import { SuggestionsComponent } from './suggestions/suggestions.component';
 
 @Component({
   selector: 'app-list',
@@ -118,6 +119,14 @@ export class ListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.refreshData();
+    });
+  }
+
+  openSuggestionModal() {
+    const dialogRef = this.dialog.open(SuggestionsComponent, {
+      data: {
+        list: this.list,
+      },
     });
   }
 }

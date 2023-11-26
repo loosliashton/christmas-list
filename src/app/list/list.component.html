@@ -15,7 +15,7 @@
         >
           <div class="item-name">{{ item.name }}</div>
         </div>
-        <button class="edit-button blue" (click)="editItem(item)">
+        <button class="edit-button cyan" (click)="editItem(item)">
           <i class="fa-solid fa-pen fa-lg white-icon"></i>
         </button>
         <button class="delete-button red" (click)="deleteItem(item.id!)">
@@ -38,6 +38,10 @@
   <div class="buttons" *ngIf="!spoilers">
     <button class="round-button green" (click)="openAddModal()">
       <i class="fa-solid fa-plus fa-xl white-icon"></i>
+    </button>
+    <button class="btn btn-info" (click)="openSuggestionModal()" style="margin-top: 10px; color: white">
+      <i class="fa-regular fa-star fa-beat"></i>
+      Suggestions
     </button>
   </div>
 </div>

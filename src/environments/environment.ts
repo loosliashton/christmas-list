@@ -1,18 +1,18 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
 
 export const environment = {
-  production: false
+  production: false,
+  openAIKey: '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',
 };
-
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDxZIKtuQ3gFXnAjWSVnmgh51pPxmSPjmA",
-  authDomain: "christmas-list-4b180.firebaseapp.com",
-  projectId: "christmas-list-4b180",
-  storageBucket: "christmas-list-4b180.appspot.com",
-  messagingSenderId: "1064787530858",
-  appId: "1:1064787530858:web:27f5f984d09486586d6613"
+  apiKey: 'AIzaSyDxZIKtuQ3gFXnAjWSVnmgh51pPxmSPjmA',
+  authDomain: 'christmas-list-4b180.firebaseapp.com',
+  projectId: 'christmas-list-4b180',
+  storageBucket: 'christmas-list-4b180.appspot.com',
+  messagingSenderId: '1064787530858',
+  appId: '1:1064787530858:web:27f5f984d09486586d6613',
 };
 
 // Initialize Firebase

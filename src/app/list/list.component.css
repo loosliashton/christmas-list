@@ -41,3 +41,27 @@
   flex-direction: column;
   margin-bottom: 10px;
 }
+
+.gradient {
+  background: linear-gradient(70deg, #e0c10e, #eeba0f);
+  border: none;
+  animation: gradientAnimation 3s infinite;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

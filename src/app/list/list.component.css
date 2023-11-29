@@ -43,9 +43,11 @@
 }
 
 .gradient {
-  background: linear-gradient(70deg, #e0c10e, #eeba0f);
+  background: linear-gradient(120deg, #c2a500, #e0c10e, #e4af00);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: .5s;
   border: none;
-  animation: gradientAnimation 3s infinite;
   color: white;
   text-align: center;
   font-size: 16px;
@@ -54,14 +56,6 @@
   margin-bottom: 10px;
 }
 
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.gradient:hover {
+  background-position: 0 0;
 }

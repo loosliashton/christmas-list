@@ -11,11 +11,13 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 import { User } from './models/user';
 import { List } from './models/list';
 import { Item } from './models/item';
 
 const db = getFirestore(app);
+const functions = getFunctions(app);
 
 @Injectable({
   providedIn: 'root',
@@ -161,7 +163,11 @@ export class FirebaseService {
     }
   }
 
-  async purchaseItem(listId: string, itemId: string, purchased: boolean): Promise<void> {
+  async purchaseItem(
+    listId: string,
+    itemId: string,
+    purchased: boolean
+  ): Promise<void> {
     const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
     await updateDoc(itemDocRef, {
       purchased: purchased,
@@ -173,5 +179,24 @@ export class FirebaseService {
     updateDoc(userDocRef, {
       name: name,
     });
+  }
+
+  // Firebase Functions
+  async getSuggestions(list: List) {
+    const getSuggestions = httpsCallable(functions, 'getSuggestions');
+
+    return getSuggestions({ list: list })
+      .then((result) => {
+        console.log(result);
+        return result.data;
+      })
+      .catch((error) => {
+        var code = error.code;
+        var message = error.message;
+        var details = error.details;
+        console.log(
+          `Error Code: ${code}\nMessage: ${message}\nDetails: ${details}`
+        );
+      });
   }
 }

@@ -41,11 +41,6 @@ button {
   color: white;
 }
 
-.rounded-input {
-  border-radius: 30px;
-  border: none;
-}
-
 .center {
   padding-top: 3%;
   display: flex;

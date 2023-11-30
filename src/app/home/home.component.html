@@ -34,18 +34,20 @@
           <input
             type="email"
             class="form-control rounded-input"
-            id="emailInput"
             placeholder="Enter email"
-            #emailInput
+            [(ngModel)]="email"
+            name="email"
           />
           <button
             class="submit-button green"
-            (click)="goToMyLists(emailInput.value)"
+            (click)="goToMyLists(email)"
           >
             <i class="fa-solid fa-gift white-icon"></i>
           </button>
         </div>
-        <p *ngIf="badEmail">Please enter a valid email address.</p>
+        <p *ngIf="badEmail" style="color: gray; padding-top: 10px">
+          Please enter a valid email address.
+        </p>
       </form>
     </div>
   </div>

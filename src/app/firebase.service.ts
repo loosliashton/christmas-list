@@ -101,6 +101,20 @@ export class FirebaseService {
       lists: user.lists?.filter((id) => id !== list.id),
     });
 
+    // Delete references to this list in other users' savedLists arrays
+    const usersCol = collection(db, 'users');
+    const q = query(usersCol, where('savedLists', 'array-contains', list.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.docs.forEach(async (document) => {
+        const userId = document.id;
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, {
+          savedLists: user.savedLists?.filter((id) => id !== list.id),
+        });
+      });
+    }
+
     // Delete the list
     const listDocRef = doc(db, 'lists', list.id!);
     await deleteDoc(listDocRef);

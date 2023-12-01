@@ -22,33 +22,28 @@
     <div class="snowflake"></div>
     <div class="snowflake"></div>
     <div class="snowflake"></div>
-    <div class="center">
-      <div class="header">
-        <h1 class="title">Gift Lists</h1>
-        <p class="explain-text">
-          Enter your email to view your lists or create a new one.
-        </p>
-      </div>
-      <form class="form">
-        <div class="form-group row-layout">
-          <input
-            type="email"
-            class="form-control rounded-input"
-            placeholder="Enter email"
-            [(ngModel)]="email"
-            name="email"
-          />
-          <button
-            class="submit-button green"
-            (click)="goToMyLists(email)"
-          >
-            <i class="fa-solid fa-gift white-icon"></i>
-          </button>
-        </div>
-        <p *ngIf="badEmail" style="color: gray; padding-top: 10px">
-          Please enter a valid email address.
-        </p>
-      </form>
+    <div class="header">
+      <h1 class="title center pad-top">Gift Lists</h1>
+      <p class="explain-text">
+        Enter your email to view your lists or create a new one.
+      </p>
     </div>
+    <form class="form center">
+      <div class="row-layout">
+        <input
+          type="email"
+          class="form-control rounded-input"
+          placeholder="Enter email"
+          [(ngModel)]="email"
+          name="email"
+        />
+        <button class="submit-button green" (click)="goToMyLists(email)">
+          <i class="fa-solid fa-gift white-icon"></i>
+        </button>
+      </div>
+      <p *ngIf="badEmail" style="color: gray; padding-top: 10px">
+        Please enter a valid email address.
+      </p>
+    </form>
   </div>
 </body>

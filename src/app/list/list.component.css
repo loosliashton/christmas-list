@@ -3,23 +3,26 @@
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.list-row {
   margin-bottom: 10px;
   display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
+  width: 90%;
+  max-width: 500px;
 }
 
 .delete-button {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  height: 50px;
-  width: 50px;
+  width: 60px;
 }
 
 .edit-button {
-  height: 50px;
-  width: 50px;
+  width: 60px;
 }
 
 .item-name {
@@ -29,6 +32,9 @@
 .list {
   margin-bottom: 20px;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .highlighted {

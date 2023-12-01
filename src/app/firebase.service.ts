@@ -174,9 +174,9 @@ export class FirebaseService {
     });
   }
 
-  changeName(id: string, name: string) {
+  async changeName(id: string, name: string) {
     const userDocRef = doc(db, 'users', id);
-    updateDoc(userDocRef, {
+    await updateDoc(userDocRef, {
       name: name,
     });
   }

@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FirebaseService } from 'src/app/firebase.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-change-name',
@@ -13,13 +13,15 @@ export class ChangeNameComponent {
 
   constructor(
     private firebase: FirebaseService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<ChangeNameComponent>
   ) {
     this.id = data.id;
     this.nameInput = data.name;
   }
 
-  changeName(newName: string) {
-    this.firebase.changeName(this.id, newName);
+  async changeName(newName: string) {
+    await this.firebase.changeName(this.id, newName);
+    this.dialogRef.close(true);
   }
 }

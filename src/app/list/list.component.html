@@ -1,37 +1,35 @@
-<div class="center">
-  <p *ngIf="!spoilers">Share your list by sending its URL.</p>
-  <h3>{{ creator?.name }}</h3>
-  <h1>{{ list?.name }}</h1>
-  <div *ngIf="loading" style="margin-bottom: 10px">
-    <div class="spinner"></div>
-  </div>
-  <div *ngIf="!loading">
-    <div class="list" *ngIf="!spoilers">
-      <div *ngFor="let item of list?.items" class="list-row">
-        <div
-          class="item"
-          style="border-bottom-right-radius: 0%; border-top-right-radius: 0%"
-          (click)="openItemModal(item)"
-        >
-          <div class="item-name">{{ item.name }}</div>
-        </div>
-        <button class="edit-button blue" (click)="editItem(item)">
-          <i class="fa-solid fa-pen fa-lg white-icon"></i>
-        </button>
-        <button class="delete-button red" (click)="deleteItem(item.id!)">
-          <i class="fa-solid fa-trash fa-lg white-icon"></i>
-        </button>
+<div *ngIf="loading" class="loading center pad-top">
+  <div class="spinner center pad-top"></div>
+</div>
+<div *ngIf="!loading">
+  <p class="center pad-top" *ngIf="!spoilers">Share your list by sending its URL.</p>
+  <h4 class="center pad-top">{{ creator?.name }}</h4>
+  <h1 class="center">{{ list?.name }}</h1>
+  <div class="list" *ngIf="!spoilers">
+    <div *ngFor="let item of list?.items" class="list-row">
+      <div
+        class="item"
+        style="border-bottom-right-radius: 0%; border-top-right-radius: 0%"
+        (click)="openItemModal(item)"
+      >
+        <div class="item-name">{{ item.name }}</div>
       </div>
+      <button class="edit-button blue" (click)="editItem(item)">
+        <i class="fa-solid fa-pen fa-lg white-icon"></i>
+      </button>
+      <button class="delete-button red" (click)="deleteItem(item.id!)">
+        <i class="fa-solid fa-trash fa-lg white-icon"></i>
+      </button>
     </div>
-    <div class="list" *ngIf="spoilers">
-      <div *ngFor="let item of list?.items" class="list-row">
-        <div
-          class="item"
-          (click)="openItemModal(item)"
-          [ngClass]="{ highlighted: item.purchased }"
-        >
-          <div class="item-name">{{ item.name }}</div>
-        </div>
+  </div>
+  <div class="list" *ngIf="spoilers">
+    <div *ngFor="let item of list?.items" class="list-row">
+      <div
+        class="item"
+        (click)="openItemModal(item)"
+        [ngClass]="{ highlighted: item.purchased }"
+      >
+        <div class="item-name">{{ item.name }}</div>
       </div>
     </div>
   </div>
@@ -39,7 +37,12 @@
     <button class="round-button green" (click)="openAddModal()">
       <i class="fa-solid fa-plus fa-xl white-icon"></i>
     </button>
-    <button *ngIf="list?.items" class="btn gradient" (click)="openSuggestionModal()" style="margin-top: 15px; color: white">
+    <button
+      *ngIf="list?.items?.length"
+      class="btn gradient"
+      (click)="openSuggestionModal()"
+      style="margin-top: 15px; color: white"
+    >
       <i class="fa-solid fa-wand-magic-sparkles"></i>
       Suggestions
     </button>

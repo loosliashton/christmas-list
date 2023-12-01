@@ -1,25 +1,26 @@
-<div class="center">
-  <div class="header">
+<div *ngIf="loading" class="loading center pad-top">
+  <div class="spinner"></div>
+</div>
+<div *ngIf="!loading">
+  <div class="center header pad-top">
     <button class="edit-button green" (click)="changeName()">
       <i class="fa-solid fa-pen fa-sm white-icon"></i>
     </button>
-    <h2>{{ user?.name }}'s Lists</h2>
+    <h1>{{ user?.name }}'s Lists</h1>
   </div>
-  <div *ngIf="loading" class="loading">
-    <div class="spinner"></div>
-  </div>
-  <div class="lists" *ngIf="!loading">
-    <div class="list" *ngFor="let list of lists">
+  <div class="lists">
+    <div class="list" *ngFor="let list of lists" (click)="navigateToList(list)">
       <div class="list-header">
-        <a [routerLink]="['/list', list.id]">
-          <h4>{{ list.name }}</h4>
-        </a>
-        <p>({{ list.items?.length }} items)</p>
+        <h4>{{ list.name }}</h4>
+        <p>
+          {{ list.items?.length }}
+          {{ list.items?.length === 1 ? "item" : "items" }}
+        </p>
       </div>
     </div>
   </div>
   <div class="buttons">
-    <button class="btn add-list-button green" (click)="openDialog()">
+    <button class="btn add-list-button green" (click)="addList()">
       <i
         class="fa-solid fa-plus fa-lg white-icon"
         style="margin-right: 10px"

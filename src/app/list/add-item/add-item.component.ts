@@ -67,6 +67,9 @@ export class AddItemComponent {
     } else {
       await this.firebase.addToList(item, this.listId);
     }
+    this.snackbar.open(`"${name}" added`, 'Close', {
+      duration: 2000,
+    });
     this.dialogRef.close();
   }
 }

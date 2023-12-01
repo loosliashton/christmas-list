@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddListComponent } from './add-list/add-list.component';
@@ -21,10 +21,12 @@ export class MyListsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private firebase: FirebaseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.loading = true;
     this.email = this.route.snapshot.queryParamMap.get('email') ?? '';
     this.user = await this.createUserIfNeeded(this.email);
     if (!this.user) return;
@@ -44,7 +46,11 @@ export class MyListsComponent implements OnInit {
     return await this.firebase.getUserById(userId);
   }
 
-  openDialog(): void {
+  navigateToList(list: List) {
+    this.router.navigate(['/list', list.id]);
+  }
+
+  addList(): void {
     const dialogRef = this.dialog.open(AddListComponent, {
       data: {
         user: this.user,
@@ -52,7 +58,7 @@ export class MyListsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      this.ngOnInit();
+      if (result) this.ngOnInit();
     });
   }
 
@@ -65,7 +71,7 @@ export class MyListsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      this.ngOnInit();
+      if (result) this.ngOnInit();
     });
   }
 }

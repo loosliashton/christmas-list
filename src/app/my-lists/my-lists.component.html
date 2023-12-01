@@ -1,7 +1,7 @@
 <div *ngIf="loading" class="loading center pad-top">
   <div class="spinner"></div>
 </div>
-<div *ngIf="!loading">
+<div *ngIf="!loading" style="padding-bottom: 20px">
   <div class="center header pad-top">
     <button class="edit-button green" (click)="changeName()">
       <i class="fa-solid fa-pen fa-sm white-icon"></i>
@@ -12,10 +12,19 @@
     <div class="list" *ngFor="let list of lists" (click)="navigateToList(list)">
       <div class="list-header">
         <h4>{{ list.name }}</h4>
-        <p>
-          {{ list.items?.length }}
-          {{ list.items?.length === 1 ? "item" : "items" }}
-        </p>
+        <div class="list-info">
+          <p>
+            {{ list.items?.length }}
+            {{ list.items?.length === 1 ? "item" : "items" }}
+          </p>
+          <div>
+            <i
+              class="fa-solid fa-trash fa-lg"
+              style="padding-left: 10px"
+              (click)="deleteList(list, $event)"
+            ></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -27,5 +36,31 @@
       ></i>
       Add List
     </button>
+  </div>
+
+  <div *ngIf="user?.savedLists?.length">
+    <div class="center pad-top-large">
+      <h3>Saved Lists</h3>
+    </div>
+    <div class="lists">
+      <div
+        class="saved-list"
+        *ngFor="let list of savedLists; index as i"
+        (click)="navigateToList(list)"
+      >
+        <div class="list-header">
+          <h4>{{ list.name }} ({{ savedListCreators[i] }})</h4>
+          <div class="list-info">
+            <p>
+              {{ list.items?.length }}
+              {{ list.items?.length === 1 ? "item" : "items" }}
+            </p>
+            <div (click)="unsaveList(list, $event)">
+              <i class="fa-solid fa-xmark fa-xl" style="padding-left: 10px"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

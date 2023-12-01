@@ -40,6 +40,14 @@ export class FirebaseService {
     return userList;
   }
 
+  async createUserIfNeeded(email: string): Promise<User | null> {
+    let userId = await this.getUserIdByEmail(email);
+    if (!userId) {
+      userId = await this.addUser(email);
+    }
+    return await this.getUserById(userId);
+  }
+
   async getUserIdByEmail(email: string): Promise<string> {
     const usersCol = collection(db, 'users');
     const q = query(usersCol, where('email', '==', email));
@@ -86,8 +94,20 @@ export class FirebaseService {
     });
   }
 
-  async getLists(user: User): Promise<List[]> {
-    let listIds = user.lists ?? [];
+  async deleteList(user: User, list: List) {
+    // Update the user's lists array in the database
+    const userDocRef = doc(db, 'users', user.id!);
+    await updateDoc(userDocRef, {
+      lists: user.lists?.filter((id) => id !== list.id),
+    });
+
+    // Delete the list
+    const listDocRef = doc(db, 'lists', list.id!);
+    await deleteDoc(listDocRef);
+  }
+
+  async getLists(user: User, saved: boolean): Promise<List[]> {
+    let listIds = (saved ? user.savedLists : user.lists) ?? [];
     let lists: List[] = [];
     for (let listId of listIds) {
       const listCol = collection(db, `lists`);
@@ -113,6 +133,25 @@ export class FirebaseService {
       }
     }
     return lists;
+  }
+
+  async saveList(user: User, list: List) {
+    if (user.savedLists?.includes(list.id!) || user.lists?.includes(list.id!))
+      return;
+    // Update the user's savedLists array in the database
+    const userDocRef = doc(db, 'users', user.id!);
+    updateDoc(userDocRef, {
+      savedLists: [...(user.savedLists ?? []), list.id],
+    });
+  }
+
+  async unsaveList(user: User, list: List) {
+    if (!user.savedLists?.includes(list.id!)) return;
+    // Update the user's savedLists array in the database
+    const userDocRef = doc(db, 'users', user.id!);
+    updateDoc(userDocRef, {
+      savedLists: user.savedLists?.filter((id) => id !== list.id),
+    });
   }
 
   async getList(listId: string): Promise<List | null> {

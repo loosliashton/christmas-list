@@ -11,6 +11,7 @@ import { AddItemComponent } from './add-item/add-item.component';
 import { SpoilerPromptComponent } from './spoiler-prompt/spoiler-prompt.component';
 import { Title } from '@angular/platform-browser';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
+import { SaveListComponent } from './save-list/save-list.component';
 
 @Component({
   selector: 'app-list',
@@ -86,6 +87,14 @@ export class ListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.refreshData();
+    });
+  }
+
+  openSaveModal() {
+    const dialogRef = this.dialog.open(SaveListComponent, {
+      data: {
+        list: this.list,
+      },
     });
   }
 

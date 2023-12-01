@@ -2,7 +2,9 @@
   <div class="spinner center pad-top"></div>
 </div>
 <div *ngIf="!loading">
-  <p class="center pad-top" *ngIf="!spoilers">Share your list by sending its URL.</p>
+  <p class="center pad-top" *ngIf="!spoilers">
+    Share your list by sending its URL.
+  </p>
   <h4 class="center pad-top">{{ creator?.name }}</h4>
   <h1 class="center">{{ list?.name }}</h1>
   <div class="list" *ngIf="!spoilers">
@@ -45,6 +47,15 @@
     >
       <i class="fa-solid fa-wand-magic-sparkles"></i>
       Suggestions
+    </button>
+  </div>
+  <div class="buttons" *ngIf="spoilers" style="padding-bottom: 80px;">
+    <button class="btn save-list-button" (click)="openSaveModal()">
+      <i
+        class="fa-solid fa-save fa-lg black-icon"
+        style="padding-right: 5px"
+      ></i>
+      Save List
     </button>
   </div>
 </div>

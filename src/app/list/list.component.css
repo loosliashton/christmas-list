@@ -25,6 +25,10 @@
   width: 60px;
 }
 
+.save-list-button {
+  background-color: rgb(255, 235, 235);
+}
+
 .item-name {
   font-size: 20px;
 }

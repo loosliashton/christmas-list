@@ -23,7 +23,7 @@ export class AddListComponent {
 
   async addList(listName: string) {
     await this.firebase.addList(this.user, listName);
-    this.snackbar.open(`'${listName}' added successfully`, 'Close', {
+    this.snackbar.open(`"${listName}" added successfully`, 'Close', {
       duration: 2000,
     });
     this.dialogRef.close(true);

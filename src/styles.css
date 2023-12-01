@@ -51,6 +51,10 @@ button {
   padding-top: 20px;
 }
 
+.pad-top-large {
+  padding-top: 50px;
+}
+
 .spinner {
   border: 8px solid #f3f3f3;
   border-top: 8px solid green;

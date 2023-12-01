@@ -15,6 +15,8 @@ import { ChangeNameComponent } from './change-name/change-name.component';
 export class MyListsComponent implements OnInit {
   email: string = '';
   lists: List[] = [];
+  savedLists: List[] = [];
+  savedListCreators: string[] = [];
   user: User | null | undefined;
   loading: boolean = true;
 
@@ -28,26 +30,42 @@ export class MyListsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.loading = true;
     this.email = this.route.snapshot.queryParamMap.get('email') ?? '';
-    this.user = await this.createUserIfNeeded(this.email);
+    this.user = await this.firebase.createUserIfNeeded(this.email);
     if (!this.user) return;
 
     if (this.user.lists) {
-      this.lists = await this.firebase.getLists(this.user);
+      this.lists = await this.firebase.getLists(this.user, false);
+    }
+
+    if (this.user.savedLists) {
+      this.savedLists = await this.firebase.getLists(this.user, true);
+      this.savedListCreators = [];
+      for (let list of this.savedLists) {
+        let creator = await this.firebase.getUserById(list.creatorID);
+        if (creator) this.savedListCreators.push(creator.name);
+        else this.savedListCreators.push('Unknown');
+      }
     }
 
     this.loading = false;
   }
 
-  async createUserIfNeeded(email: string): Promise<User | null> {
-    let userId = await this.firebase.getUserIdByEmail(email);
-    if (!userId) {
-      userId = await this.firebase.addUser(email);
-    }
-    return await this.firebase.getUserById(userId);
-  }
-
   navigateToList(list: List) {
     this.router.navigate(['/list', list.id]);
+  }
+
+  async unsaveList(list: List, event: Event) {
+    event.stopPropagation();
+    if (!confirm('Are you sure you want to unsave this list?')) return;
+    await this.firebase.unsaveList(this.user!, list);
+    this.ngOnInit();
+  }
+
+  async deleteList(list: List, $event: Event) {
+    $event.stopPropagation();
+    if (!confirm('Are you sure you want to delete this list?')) return;
+    await this.firebase.deleteList(this.user!, list);
+    this.ngOnInit();
   }
 
   addList(): void {
@@ -73,5 +91,10 @@ export class MyListsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result) => {
       if (result) this.ngOnInit();
     });
+  }
+
+  async getUserName(id: string): Promise<string> {
+    let user = await this.firebase.getUserById(id);
+    return user?.name ?? '';
   }
 }

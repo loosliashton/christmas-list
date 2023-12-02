@@ -19,6 +19,7 @@ export class MyListsComponent implements OnInit {
   savedListCreators: string[] = [];
   user: User | null | undefined;
   loading: boolean = true;
+  loadingSaved: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +37,7 @@ export class MyListsComponent implements OnInit {
     if (this.user.lists) {
       this.lists = await this.firebase.getLists(this.user, false);
     }
+    this.loading = false;
 
     if (this.user.savedLists) {
       this.savedLists = await this.firebase.getLists(this.user, true);
@@ -47,7 +49,7 @@ export class MyListsComponent implements OnInit {
       }
     }
 
-    this.loading = false;
+    this.loadingSaved = false;
   }
 
   navigateToList(list: List) {

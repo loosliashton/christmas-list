@@ -32,7 +32,8 @@
   width: 100%;
 }
 
-.list-header p, h4 {
+.list-header p,
+h4 {
   margin: 0;
 }
 
@@ -76,6 +77,12 @@
   display: flex;
   align-items: center;
   max-width: 500px;
+}
+
+.saved-list .list-header p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .lists {

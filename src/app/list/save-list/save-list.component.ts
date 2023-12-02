@@ -23,6 +23,7 @@ export class SaveListComponent {
 
   async saveList(email: string) {
     // Validate email
+    email = email.toLowerCase().trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       this.snackbar.open('Invalid email address', 'Close', {

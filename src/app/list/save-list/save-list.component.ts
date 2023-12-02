@@ -22,8 +22,8 @@ export class SaveListComponent {
   }
 
   async saveList(email: string) {
+    if (!email) return;
     // Validate email
-    email = email.toLowerCase().trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       this.snackbar.open('Invalid email address', 'Close', {
@@ -31,8 +31,6 @@ export class SaveListComponent {
       });
       return;
     }
-
-    if (!email) return;
 
     let user = await this.firebase.createUserIfNeeded(email);
     if (!user) return;

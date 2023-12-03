@@ -12,6 +12,7 @@ import { SpoilerPromptComponent } from './spoiler-prompt/spoiler-prompt.componen
 import { Title } from '@angular/platform-browser';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SaveListComponent } from './save-list/save-list.component';
+import { ShareComponent } from './share/share.component';
 
 @Component({
   selector: 'app-list',
@@ -133,6 +134,14 @@ export class ListComponent {
 
   openSuggestionModal() {
     const dialogRef = this.dialog.open(SuggestionsComponent, {
+      data: {
+        list: this.list,
+      },
+    });
+  }
+
+  openShareModal() {
+    const dialogRef = this.dialog.open(ShareComponent, {
       data: {
         list: this.list,
       },

@@ -5,4 +5,5 @@ export interface List {
   name: string;
   items?: Item[];
   creatorID: string; // ID
+  shortUrl?: string;
 }

@@ -20,6 +20,7 @@ import { ItemComponent } from './list/item/item.component';
 import { ChangeNameComponent } from './my-lists/change-name/change-name.component';
 import { SuggestionsComponent } from './list/suggestions/suggestions.component';
 import { SaveListComponent } from './list/save-list/save-list.component';
+import { ShareComponent } from './list/share/share.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -39,6 +40,7 @@ const routes: Routes = [
     ChangeNameComponent,
     SuggestionsComponent,
     SaveListComponent,
+    ShareComponent,
   ],
   imports: [
     BrowserModule,

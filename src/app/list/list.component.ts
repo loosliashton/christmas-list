@@ -146,5 +146,9 @@ export class ListComponent {
         list: this.list,
       },
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.refreshData();
+    });
   }
 }

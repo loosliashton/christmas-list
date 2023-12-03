@@ -120,6 +120,13 @@ export class FirebaseService {
     await deleteDoc(listDocRef);
   }
 
+  async updateListShortUrl(list: List, shortUrl: string) {
+    const listDocRef = doc(db, 'lists', list.id!);
+    await updateDoc(listDocRef, {
+      shortUrl: shortUrl,
+    });
+  }
+
   async getLists(user: User, saved: boolean): Promise<List[]> {
     let listIds = (saved ? user.savedLists : user.lists) ?? [];
     let lists: List[] = [];

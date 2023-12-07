@@ -42,7 +42,11 @@
 }
 
 .highlighted {
-  background-color: lightgreen;
+  background-color: rgb(243, 243, 243);
+}
+
+.highlighted > div {
+  color: gray;
 }
 
 .buttons {

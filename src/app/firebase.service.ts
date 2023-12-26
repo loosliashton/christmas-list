@@ -94,6 +94,13 @@ export class FirebaseService {
     });
   }
 
+  async editListName(listId: string, newName: string): Promise<void> {
+    const listDocRef = doc(db, 'lists', listId);
+    await updateDoc(listDocRef, {
+      name: newName,
+    });
+  }
+
   async deleteList(user: User, list: List) {
     // Update the user's lists array in the database
     const userDocRef = doc(db, 'users', user.id!);

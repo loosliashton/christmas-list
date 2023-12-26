@@ -9,7 +9,12 @@
     </button>
   </div>
   <h4 class="center pad-top">{{ creator?.name }}</h4>
-  <h1 class="center">{{ list?.name }}</h1>
+  <div class="center header pad-top">
+    <button *ngIf="!spoilers" class="name-edit-button green" (click)="changeListName()">
+      <i class="fa-solid fa-pen fa-sm white-icon"></i>
+    </button>
+    <h1 class="center">{{ list?.name }}</h1>
+  </div>
   <div class="buttons" *ngIf="spoilers">
     <button class="btn save-list-button" (click)="openSaveModal()">
       <i

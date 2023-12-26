@@ -13,6 +13,7 @@ import { Title } from '@angular/platform-browser';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SaveListComponent } from './save-list/save-list.component';
 import { ShareComponent } from './share/share.component';
+import { ChangeListNameComponent } from './change-list-name/change-list-name.component';
 
 @Component({
   selector: 'app-list',
@@ -142,6 +143,18 @@ export class ListComponent {
 
   openShareModal() {
     const dialogRef = this.dialog.open(ShareComponent, {
+      data: {
+        list: this.list,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.refreshData();
+    });
+  }
+
+  changeListName() {
+    const dialogRef = this.dialog.open(ChangeListNameComponent, {
       data: {
         list: this.list,
       },

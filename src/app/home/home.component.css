@@ -2,6 +2,9 @@
   margin-right: auto;
   margin-left: auto;
   text-align: center;
+}
+
+.white-title {
   color: white;
 }
 
@@ -21,18 +24,23 @@
   margin-right: 10px;
 }
 
-.explain-text {
+.explain-text-christmas {
   margin: 10px;
   text-align: center;
   color: lightgray;
 }
 
-.rounded-input {
-  border-radius: 30px;
-  border: none;
+.explain-text {
+  margin: 10px;
+  text-align: center;
+  color: darkgray;
 }
 
-body {
+.rounded-input {
+  border-radius: 30px;
+}
+
+.christmas-body {
   background: rgb(24, 0, 54);
 }
 

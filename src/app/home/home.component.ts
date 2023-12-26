@@ -9,10 +9,19 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   badEmail: boolean = false;
   email: string = '';
+  christmasTheme: boolean = false;
+
+  ngOnInit(): void {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+
+    if (currentMonth === 12 && currentDay >= 1 && currentDay <= 25) {
+      this.christmasTheme = true;
+    }
+  }
 
   constructor(private router: Router) {}
-
-  ngOnInit(): void {}
 
   goToMyLists(email: string) {
     this.badEmail = false;

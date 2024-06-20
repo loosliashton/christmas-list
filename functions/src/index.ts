@@ -1,26 +1,37 @@
 const functions = require('firebase-functions');
-const OpenAI = require('openai');
 
-const openai = new OpenAI({apiKey: functions.config().openai.key});
+const {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} = require('@google/generative-ai');
+const apiKey = functions.config().gemini.key;
+const gemini = new GoogleGenerativeAI(apiKey);
+
+const model = gemini.getGenerativeModel({
+  model: 'gemini-1.5-flash',
+});
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: 'application/json',
+};
 
 exports.getSuggestions = functions.https.onCall(
   async (data: { list: any }, context: any) => {
-    let list = data.list;
-    const result = await openai.chat.completions.create({
-      messages: [
-        {
-          role: 'system',
-          content:
-            "I'm putting together a gift list and need suggestions on what to add. Give me at least two suggestions and up to ten in the form of a JSON array in an object called 'suggestions'. Please return the following JSON for each suggestion: {name: string, description: string}.",
-        },
-        {
-          role: 'user',
-          content: generateContentString(list),
-        },
-      ],
-      model: 'gpt-3.5-turbo-1106',
-      response_format: { type: 'json_object' },
-      temperature: 0.2,
+    const parts = [
+      { text: generateContentString(data.list) },
+      {
+        text: "I'm putting together a gift list and need suggestions on what to add. Make sure the suggestions are related to the list I provide. Provide at least one suggestion for every two items in the provided list. Provide your suggestions in the form of a JSON array in an object called 'suggestions'. Please return the following JSON for each suggestion: {name: string, description: string}. ",
+      },
+    ];
+
+    const result = await model.generateContent({
+      contents: [{ role: 'user', parts }],
+      generationConfig,
     });
 
     return result;

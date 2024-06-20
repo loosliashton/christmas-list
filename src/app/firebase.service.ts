@@ -253,9 +253,9 @@ export class FirebaseService {
     const getSuggestions = httpsCallable(functions, 'getSuggestions');
 
     return getSuggestions({ list: list })
-      .then((result) => {
+      .then((result: any) => {
         console.log(result);
-        return result.data;
+        return JSON.parse(result.data.response.candidates[0].content.parts[0].text);
       })
       .catch((error) => {
         var code = error.code;

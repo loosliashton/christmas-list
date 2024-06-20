@@ -31,7 +31,8 @@ export class SuggestionsComponent {
   }
 
   processResults(res: any) {
-    if (!res.choices || !res.choices[0]) {
+    let suggestions: any[] | undefined = res?.suggestions;
+    if (!suggestions?.length) {
       this.results.push({
         name: 'No suggestions found',
         description: 'Try adding more items to your list',
@@ -39,9 +40,6 @@ export class SuggestionsComponent {
       this.loading = false;
       return;
     }
-    let result = res.choices[0].message.content;
-    if (!result) return;
-    let suggestions = JSON.parse(result).suggestions;
 
     for (let suggestion of suggestions) {
       if (!suggestion.name || !suggestion.description) continue;

@@ -32,14 +32,8 @@ export class ItemComponent {
   }
 
   isAmazonUrl(): boolean {
-    if (this.item.url) {
-      return (
-        this.item.url.startsWith('https://www.amazon.com/') &&
-        this.item.url.includes('/dp/')
-      );
-    }
-
-    return false;
+    const amazonUrlPattern = /^https:\/\/www\.amazon\.com\/.*\/dp\/.+/;
+    return this.item.url ? amazonUrlPattern.test(this.item.url) : false;
   }
 
   getCamelUrl(): string {

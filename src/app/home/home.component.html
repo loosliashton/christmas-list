@@ -1,27 +1,25 @@
 <body [ngClass]="{ 'christmas-body': christmasTheme }">
   <div class="snowflakes">
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
-    <div *ngIf="christmasTheme" class="snowflake"></div>
+    @if (christmasTheme) {
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+      <div class="snowflake"></div>
+    }
     <div class="header">
       <h1 [ngClass]="{ 'white-title': christmasTheme }" class="center pad-top">
         Gift Lists
@@ -31,7 +29,7 @@
           'explain-text': !christmasTheme,
           'explain-text-christmas': christmasTheme
         }"
-      >
+        >
         Enter your email to view your lists or create a new one.
       </p>
     </div>
@@ -43,14 +41,16 @@
           placeholder="Enter email"
           [(ngModel)]="email"
           name="email"
-        />
-        <button class="submit-button green" (click)="goToMyLists(email)">
-          <i class="fa-solid fa-gift white-icon"></i>
-        </button>
-      </div>
-    </form>
-    <p *ngIf="badEmail" class="center" style="color: gray; padding-top: 10px">
-      Please enter a valid email address.
-    </p>
-  </div>
-</body>
+          />
+          <button class="submit-button green" (click)="goToMyLists(email)">
+            <i class="fa-solid fa-gift white-icon"></i>
+          </button>
+        </div>
+      </form>
+      @if (badEmail) {
+        <p class="center" style="color: gray; padding-top: 10px">
+          Please enter a valid email address.
+        </p>
+      }
+    </div>
+  </body>

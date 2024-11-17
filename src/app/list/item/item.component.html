@@ -1,19 +1,24 @@
 <h2 mat-dialog-title>
-  <a *ngIf="item.url" href="{{ item.url }}" target="_blank">{{ item.name }}</a>
-  <span *ngIf="!item.url">{{ item.name }}</span>
+  @if (item.url) {
+    <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+  }
+  @if (!item.url) {
+    <span>{{ item.name }}</span>
+  }
 </h2>
 <mat-dialog-content>
   <p>{{ item.details }}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
-  <button
-    *ngIf="spoilers"
-    mat-button
-    color="primary"
-    [mat-dialog-close]="true"
-    (click)="togglePurchase()"
-  >
-    {{ item.purchased ? "Mark as Unpurchased" : "Mark as Purchased" }}
-  </button>
+  @if (spoilers) {
+    <button
+      mat-button
+      color="primary"
+      [mat-dialog-close]="true"
+      (click)="togglePurchase()"
+      >
+      {{ item.purchased ? "Mark as Unpurchased" : "Mark as Purchased" }}
+    </button>
+  }
 </mat-dialog-actions>

@@ -1,75 +1,98 @@
-<div *ngIf="loading" class="loading center pad-top">
-  <div class="spinner center pad-top"></div>
-</div>
-<div *ngIf="!loading" style="padding-bottom: 80px">
-  <div class="center pad-top" *ngIf="!spoilers">
-    <button class="btn btn-light" (click)="openShareModal()">
-      <i class="fa-solid fa-share fa-md black-icon"></i>
-      Share
-    </button>
+@if (loading) {
+  <div class="loading center pad-top">
+    <div class="spinner center pad-top"></div>
   </div>
-  <h4 class="center pad-top">{{ creator?.name }}</h4>
-  <div class="center header pad-top">
-    <button *ngIf="!spoilers" class="name-edit-button green" (click)="changeListName()">
-      <i class="fa-solid fa-pen fa-sm white-icon"></i>
-    </button>
-    <h1 class="center">{{ list?.name }}</h1>
-  </div>
-  <div class="buttons" *ngIf="spoilers">
-    <button class="btn save-list-button" (click)="openSaveModal()">
-      <i
-        class="fa-solid fa-save fa-lg black-icon"
-        style="padding-right: 5px"
-      ></i>
-      Save List
-    </button>
-  </div>
-  <div class="list" *ngIf="!spoilers">
-    <div *ngFor="let item of list?.items" class="list-row">
-      <div
-        class="item"
-        style="border-bottom-right-radius: 0%; border-top-right-radius: 0%"
-        (click)="openItemModal(item)"
-      >
-        <div class="item-name">{{ item.name }}</div>
+}
+@if (!loading) {
+  <div style="padding-bottom: 80px">
+    @if (!spoilers) {
+      <div class="center pad-top">
+        <button class="btn btn-light" (click)="openShareModal()">
+          <i class="fa-solid fa-share fa-md black-icon"></i>
+          Share
+        </button>
       </div>
-      <button class="edit-button blue" (click)="editItem(item)">
-        <i class="fa-solid fa-pen fa-lg white-icon"></i>
-      </button>
-      <button class="delete-button red" (click)="deleteItem(item.id!)">
-        <i class="fa-solid fa-trash fa-lg white-icon"></i>
-      </button>
+    }
+    <h4 class="center pad-top">{{ creator?.name }}</h4>
+    <div class="center header pad-top">
+      @if (!spoilers) {
+        <button class="name-edit-button green" (click)="changeListName()">
+          <i class="fa-solid fa-pen fa-sm white-icon"></i>
+        </button>
+      }
+      <h1 class="center">{{ list?.name }}</h1>
     </div>
-  </div>
-  <div class="list" *ngIf="spoilers">
-    <div *ngFor="let item of list?.items" class="list-row">
-      <div
-        class="item"
-        (click)="openItemModal(item)"
-        [ngClass]="{ highlighted: item.purchased }"
-      >
-        <div class="item-name">{{ item.name }}</div>
+    @if (spoilers) {
+      <div class="buttons">
+        <button class="btn save-list-button" (click)="openSaveModal()">
+          <i
+            class="fa-solid fa-save fa-lg black-icon"
+            style="padding-right: 5px"
+          ></i>
+          Save List
+        </button>
       </div>
-    </div>
+    }
+    @if (!spoilers) {
+      <div class="list">
+        @for (item of list?.items; track item) {
+          <div class="list-row">
+            <div
+              class="item"
+              style="border-bottom-right-radius: 0%; border-top-right-radius: 0%"
+              (click)="openItemModal(item)"
+              >
+              <div class="item-name">{{ item.name }}</div>
+            </div>
+            <button class="edit-button blue" (click)="editItem(item)">
+              <i class="fa-solid fa-pen fa-lg white-icon"></i>
+            </button>
+            <button class="delete-button red" (click)="deleteItem(item.id!)">
+              <i class="fa-solid fa-trash fa-lg white-icon"></i>
+            </button>
+          </div>
+        }
+      </div>
+    }
+    @if (spoilers) {
+      <div class="list">
+        @for (item of list?.items; track item) {
+          <div class="list-row">
+            <div
+              class="item"
+              (click)="openItemModal(item)"
+              [ngClass]="{ highlighted: item.purchased }"
+              >
+              <div class="item-name">{{ item.name }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+    @if (!spoilers) {
+      <div class="buttons">
+        <button class="round-button green" (click)="openAddModal()">
+          <i class="fa-solid fa-plus fa-xl white-icon"></i>
+        </button>
+        @if (list?.items?.length) {
+          <button
+            class="btn gradient"
+            (click)="openSuggestionModal()"
+            style="margin-top: 15px; color: white"
+            >
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Suggestions
+          </button>
+        }
+      </div>
+    }
   </div>
-  <div class="buttons" *ngIf="!spoilers">
-    <button class="round-button green" (click)="openAddModal()">
-      <i class="fa-solid fa-plus fa-xl white-icon"></i>
-    </button>
-    <button
-      *ngIf="list?.items?.length"
-      class="btn gradient"
-      (click)="openSuggestionModal()"
-      style="margin-top: 15px; color: white"
-    >
-      <i class="fa-solid fa-wand-magic-sparkles"></i>
-      Suggestions
-    </button>
-  </div>
-</div>
+}
 
-<footer class="footer" *ngIf="spoilers">
-  <a href="/">
-    <p>Click here to create your own list</p>
-  </a>
-</footer>
+@if (spoilers) {
+  <footer class="footer">
+    <a href="/">
+      <p>Click here to create your own list</p>
+    </a>
+  </footer>
+}

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   badEmail: boolean = false;
   email: string = '';
-  christmasTheme: boolean = false;
+  christmasTheme: boolean = true;
 
   ngOnInit(): void {
     const currentDate = new Date();

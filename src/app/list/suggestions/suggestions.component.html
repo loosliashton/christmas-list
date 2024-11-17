@@ -1,13 +1,19 @@
 <h2 mat-dialog-title>
   <span>Suggestions</span>
 </h2>
-<mat-dialog-content *ngIf="loading" style="display: flex; justify-content: center; align-items: center;">
-  <div class="spinner"></div>
-</mat-dialog-content>
-<mat-dialog-content *ngIf="!loading && results">
-  <div *ngFor="let item of results">
-    <p>
-      <strong>{{ item.name }}: </strong>{{ item.description }}
-    </p>
-  </div>
-</mat-dialog-content>
+@if (loading) {
+  <mat-dialog-content style="display: flex; justify-content: center; align-items: center;">
+    <div class="spinner"></div>
+  </mat-dialog-content>
+}
+@if (!loading && results) {
+  <mat-dialog-content>
+    @for (item of results; track item) {
+      <div>
+        <p>
+          <strong>{{ item.name }}: </strong>{{ item.description }}
+        </p>
+      </div>
+    }
+  </mat-dialog-content>
+}

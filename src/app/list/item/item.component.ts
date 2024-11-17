@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Item } from 'src/app/models/item';
 import { FirebaseService } from 'src/app/firebase.service';

@@ -16,7 +16,7 @@ export class ItemComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
   ) {
     this.item = data.item;
     this.listId = data.listId;
@@ -27,7 +27,18 @@ export class ItemComponent {
     this.firebase.purchaseItem(
       this.listId,
       this.item.id!,
-      !this.item.purchased
+      !this.item.purchased,
     );
+  }
+
+  isAmazonUrl(): boolean {
+    const amazonUrlPattern = /^https:\/\/www\.amazon\.com\/.*\/dp\/.+/;
+    return this.item.url ? amazonUrlPattern.test(this.item.url) : false;
+  }
+
+  getCamelUrl(): string {
+    // Get the item ID from the Amazon URL
+    const itemId = this.item.url.split('/dp/')[1].split('/')[0];
+    return `https://camelcamelcamel.com/product/${itemId}`;
   }
 }

@@ -46,5 +46,15 @@ exports.getSuggestions = functions.https.onCall(
       }
       return content;
     }
-  }
+  },
+);
+
+const amazonAsin = require('amazon-asin');
+
+exports.getCamelLink = functions.https.onCall(
+  async (data: { url: string }, context: any) => {
+    const result = await amazonAsin.asyncParseAsin(data.url);
+    if (!result.ASIN) return null;
+    return `https://camelcamelcamel.com/product/${result.ASIN}`;
+  },
 );

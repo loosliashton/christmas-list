@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Item } from 'src/app/models/item';
@@ -7,7 +7,7 @@ import { FirebaseService } from 'src/app/firebase.service';
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrl: './item.component.css',
+  styleUrls: ['./item.component.css'],
 })
 export class ItemComponent {
   item: Item;
@@ -29,16 +29,5 @@ export class ItemComponent {
       this.item.id!,
       !this.item.purchased,
     );
-  }
-
-  isAmazonUrl(): boolean {
-    const amazonUrlPattern = /^https:\/\/www\.amazon\.com\/.*\/dp\/.+/;
-    return this.item.url ? amazonUrlPattern.test(this.item.url) : false;
-  }
-
-  getCamelUrl(): string {
-    // Get the item ID from the Amazon URL
-    const itemId = this.item.url.split('/dp/')[1].split('/')[0];
-    return `https://camelcamelcamel.com/product/${itemId}`;
   }
 }

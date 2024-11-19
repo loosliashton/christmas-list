@@ -34,7 +34,7 @@ export class FirebaseService {
         const user = doc.data() as User;
         user.id = doc.id;
         return user;
-      })
+      }),
     );
 
     return userList;
@@ -154,7 +154,7 @@ export class FirebaseService {
             const item = doc.data() as Item;
             item.id = doc.id;
             return item;
-          })
+          }),
         );
 
         lists.push(list);
@@ -198,7 +198,7 @@ export class FirebaseService {
           const item = doc.data() as Item;
           item.id = doc.id;
           return item;
-        })
+        }),
       );
       return list;
     }
@@ -207,18 +207,27 @@ export class FirebaseService {
   }
 
   async addToList(item: Item, listId: string): Promise<void> {
+    if (this.isAmazonUrl(item.url)) {
+      item.camelUrl = await this.getCamelLink(item.url);
+    }
     const itemsCol = collection(db, `lists/${listId}/items`);
     await addDoc(itemsCol, item);
   }
 
   async editItem(item: Item, listId: string): Promise<void> {
     if (listId && item.id) {
+      if (this.isAmazonUrl(item.url)) {
+        item.camelUrl = await this.getCamelLink(item.url);
+      } else {
+        item.camelUrl = null;
+      }
       const itemDocRef = doc(db, `lists/${listId}/items`, item.id);
       await updateDoc(itemDocRef, {
         // Don't update purchased status
         name: item.name,
         url: item.url,
         details: item.details,
+        camelUrl: item.camelUrl,
       });
     }
   }
@@ -233,7 +242,7 @@ export class FirebaseService {
   async purchaseItem(
     listId: string,
     itemId: string,
-    purchased: boolean
+    purchased: boolean,
   ): Promise<void> {
     const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
     await updateDoc(itemDocRef, {
@@ -255,15 +264,48 @@ export class FirebaseService {
     return getSuggestions({ list: list })
       .then((result: any) => {
         console.log(result);
-        return JSON.parse(result.data.response.candidates[0].content.parts[0].text);
+        return JSON.parse(
+          result.data.response.candidates[0].content.parts[0].text,
+        );
       })
       .catch((error) => {
         var code = error.code;
         var message = error.message;
         var details = error.details;
         console.log(
-          `Error Code: ${code}\nMessage: ${message}\nDetails: ${details}`
+          `Error Code: ${code}\nMessage: ${message}\nDetails: ${details}`,
         );
       });
+  }
+
+  async getCamelLink(url: string): Promise<string | null> {
+    const getCamelLink = httpsCallable(functions, 'getCamelLink');
+
+    return getCamelLink({ url: url })
+      .then((result: any) => {
+        return result.data;
+      })
+      .catch((error) => {
+        var code = error.code;
+        var message = error.message;
+        var details = error.details;
+        console.log(
+          `Error Code: ${code}\nMessage: ${message}\nDetails: ${details}`,
+        );
+      });
+  }
+
+  // Helper Functions
+
+  /**
+   * Determines if a given URL is an Amazon URL.
+   * This is a basic filter to reduce unnecessary cloud calls
+   * for non-Amazon URLs.
+   * @param url - The URL to evaluate.
+   * @returns True if the URL is an Amazon URL, false otherwise.
+   */
+  isAmazonUrl(url: string): boolean {
+    if (!url) return false;
+    return ['amazon', 'amzn.to', 'a.co'].some((domain) => url.includes(domain));
   }
 }

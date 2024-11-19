@@ -33,7 +33,7 @@ export class ListComponent {
     private firebase: FirebaseService,
     public dialog: MatDialog,
     private titleService: Title,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {

@@ -10,8 +10,8 @@
   <p>{{ item.details }}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  @if (camelUrl) {
-    <a mat-button color="accent" href="{{ camelUrl }}" target="_blank">
+  @if (item.camelUrl) {
+    <a mat-button color="accent" href="{{ item.camelUrl }}" target="_blank">
       Track Price
     </a>
   }

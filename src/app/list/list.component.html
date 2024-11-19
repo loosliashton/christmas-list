@@ -35,13 +35,16 @@
     }
     @if (!spoilers) {
       <div class="list">
-        @for (item of list?.items; track item) {
+        @for (item of list?.items; track item.id) {
           <div class="list-row">
             <div
               class="item"
-              style="border-bottom-right-radius: 0%; border-top-right-radius: 0%"
+              style="
+                border-bottom-right-radius: 0%;
+                border-top-right-radius: 0%;
+              "
               (click)="openItemModal(item)"
-              >
+            >
               <div class="item-name">{{ item.name }}</div>
             </div>
             <button class="edit-button blue" (click)="editItem(item)">
@@ -62,7 +65,7 @@
               class="item"
               (click)="openItemModal(item)"
               [ngClass]="{ highlighted: item.purchased }"
-              >
+            >
               <div class="item-name">{{ item.name }}</div>
             </div>
           </div>
@@ -79,7 +82,7 @@
             class="btn gradient"
             (click)="openSuggestionModal()"
             style="margin-top: 15px; color: white"
-            >
+          >
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             Suggestions
           </button>

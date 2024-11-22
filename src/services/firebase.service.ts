@@ -12,9 +12,9 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { getFunctions, httpsCallable } from 'firebase/functions';
-import { User } from './models/user';
-import { List } from './models/list';
-import { Item } from './models/item';
+import { User } from '../models/user';
+import { List } from '../models/list';
+import { Item } from '../models/item';
 
 const db = getFirestore(app);
 const functions = getFunctions(app);

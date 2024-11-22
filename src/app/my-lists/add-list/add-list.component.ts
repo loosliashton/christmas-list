@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FirebaseService } from 'src/app/firebase.service';
-import { User } from 'src/app/models/user';
+import { FirebaseService } from 'src/services/firebase.service';
+import { User } from 'src/models/user';
 
 @Component({
   selector: 'app-add-list',

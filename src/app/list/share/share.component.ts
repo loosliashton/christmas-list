@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FirebaseService } from 'src/app/firebase.service';
+import { FirebaseService } from 'src/services/firebase.service';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { List } from 'src/app/models/list';
+import { List } from 'src/models/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

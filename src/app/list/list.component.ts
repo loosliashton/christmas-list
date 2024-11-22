@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { FirebaseService } from '../firebase.service';
-import { List } from '../models/list';
-import { User } from '../models/user';
-import { Item } from '../models/item';
+import { FirebaseService } from '../../services/firebase.service';
+import { List } from '../../models/list';
+import { User } from '../../models/user';
+import { Item } from '../../models/item';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemComponent } from './item/item.component';
 import { AddItemComponent } from './add-item/add-item.component';

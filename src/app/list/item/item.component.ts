@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Item } from 'src/app/models/item';
-import { FirebaseService } from 'src/app/firebase.service';
+import { Item } from 'src/models/item';
+import { FirebaseService } from 'src/services/firebase.service';
 
 @Component({
   selector: 'app-item',

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { List } from 'src/app/models/list';
-import { FirebaseService } from 'src/app/firebase.service';
+import { List } from 'src/models/list';
+import { FirebaseService } from 'src/services/firebase.service';
 
 @Component({
   selector: 'app-suggestions',

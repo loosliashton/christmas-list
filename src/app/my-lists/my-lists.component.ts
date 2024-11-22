@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseService } from '../firebase.service';
+import { FirebaseService } from '../../services/firebase.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddListComponent } from './add-list/add-list.component';
-import { List } from '../models/list';
-import { User } from '../models/user';
+import { List } from '../../models/list';
+import { User } from '../../models/user';
 import { ChangeNameComponent } from './change-name/change-name.component';
 
 @Component({

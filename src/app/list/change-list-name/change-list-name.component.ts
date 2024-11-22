@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FirebaseService } from 'src/app/firebase.service';
+import { FirebaseService } from 'src/services/firebase.service';
 
 @Component({
   selector: 'app-change-list-name',

@@ -1,9 +1,17 @@
+<h4 class="center pad-top">{{ creator?.name }}</h4>
+<div class="center header pad-top">
+  @if (!spoilers && !loading) {
+    <button class="name-edit-button green" (click)="changeListName()">
+      <i class="fa-solid fa-pen fa-sm white-icon"></i>
+    </button>
+  }
+  <h1 class="center">{{ list?.name }}</h1>
+</div>
 @if (loading) {
   <div class="loading center pad-top">
     <div class="spinner center pad-top"></div>
   </div>
-}
-@if (!loading) {
+} @else {
   <div style="padding-bottom: 80px">
     @if (!spoilers) {
       <div class="center pad-top">
@@ -12,17 +20,7 @@
           Share
         </button>
       </div>
-    }
-    <h4 class="center pad-top">{{ creator?.name }}</h4>
-    <div class="center header pad-top">
-      @if (!spoilers) {
-        <button class="name-edit-button green" (click)="changeListName()">
-          <i class="fa-solid fa-pen fa-sm white-icon"></i>
-        </button>
-      }
-      <h1 class="center">{{ list?.name }}</h1>
-    </div>
-    @if (spoilers) {
+    } @else {
       <div class="buttons">
         <button class="btn save-list-button" (click)="openSaveModal()">
           <i
@@ -56,8 +54,7 @@
           </div>
         }
       </div>
-    }
-    @if (spoilers) {
+    } @else {
       <div class="list">
         @for (item of list?.items; track item) {
           <div class="list-row">

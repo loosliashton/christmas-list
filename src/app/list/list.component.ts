@@ -37,9 +37,6 @@ export class ListComponent {
   ) {}
 
   async ngOnInit() {
-    // Check to see if the user wants spoilers
-    this.spoilers = await this.openSpoilerPrompt();
-
     this.route.paramMap.subscribe((params) => {
       let id = params.get('id') ?? '';
       if (!id) return;
@@ -60,7 +57,9 @@ export class ListComponent {
             this.cdr.detectChanges();
           });
         })
-        .finally(() => {
+        .finally(async () => {
+          // Check to see if the user wants spoilers
+          this.spoilers = await this.openSpoilerPrompt();
           this.loading = false;
         });
     });

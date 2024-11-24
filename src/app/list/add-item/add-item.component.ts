@@ -15,12 +15,13 @@ export class AddItemComponent {
   name: string = '';
   url: string = '';
   details: string = '';
+  loading: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: MatSnackBar,
     private firebase: FirebaseService,
-    public dialogRef: MatDialogRef<AddItemComponent>
+    public dialogRef: MatDialogRef<AddItemComponent>,
   ) {
     this.listId = data.listId;
     this.item = data.item;
@@ -35,6 +36,7 @@ export class AddItemComponent {
   }
 
   async addItem(name: string, url: string, details: string) {
+    this.loading = true;
     // Validate fields
     if (!name) {
       this.snackbar.open('Please enter a name', 'Close', {
@@ -67,6 +69,7 @@ export class AddItemComponent {
     } else {
       await this.firebase.addToList(item, this.listId);
     }
+    this.loading = false;
     this.snackbar.open(`"${name}" added`, 'Close', {
       duration: 2000,
     });

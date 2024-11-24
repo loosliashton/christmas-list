@@ -22,6 +22,7 @@ import { SuggestionsComponent } from './list/suggestions/suggestions.component';
 import { SaveListComponent } from './list/save-list/save-list.component';
 import { ShareComponent } from './list/share/share.component';
 import { ChangeListNameComponent } from './list/change-list-name/change-list-name.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -55,6 +56,7 @@ const routes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

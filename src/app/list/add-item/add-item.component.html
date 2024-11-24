@@ -32,11 +32,21 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button
-      mat-button
-      (click)="addItem(itemName.value, itemUrl.value, itemDetails.value)"
-    >
-      {{item ? 'Save' : 'Add'}}
-    </button>
+    @if (!loading) {
+      <button
+        mat-button
+        (click)="addItem(itemName.value, itemUrl.value, itemDetails.value)"
+      >
+        {{ item ? "Save" : "Add" }}
+      </button>
+    } @else {
+      <button mat-button>
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="20"
+          [strokeWidth]="2"
+        ></mat-progress-spinner>
+      </button>
+    }
   </mat-dialog-actions>
 </div>

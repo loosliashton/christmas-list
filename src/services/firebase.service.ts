@@ -94,6 +94,11 @@ export class FirebaseService {
     });
   }
 
+  async editList(list: List) {
+    const listDocRef = doc(db, 'lists', list.id!);
+    await updateDoc(listDocRef, list as any);
+  }
+
   async editListName(listId: string, newName: string): Promise<void> {
     const listDocRef = doc(db, 'lists', listId);
     await updateDoc(listDocRef, {
@@ -163,7 +168,7 @@ export class FirebaseService {
     return lists;
   }
 
-  async saveList(user: User, list: List) {
+  async addToSavedLists(user: User, list: List) {
     if (user.savedLists?.includes(list.id!) || user.lists?.includes(list.id!))
       return;
     // Update the user's savedLists array in the database
@@ -173,7 +178,7 @@ export class FirebaseService {
     });
   }
 
-  async unsaveList(user: User, list: List) {
+  async removeFromSavedLists(user: User, list: List) {
     if (!user.savedLists?.includes(list.id!)) return;
     // Update the user's savedLists array in the database
     const userDocRef = doc(db, 'users', user.id!);
@@ -190,16 +195,6 @@ export class FirebaseService {
       const doc = querySnapshot.docs[0];
       const list = doc.data() as List;
       list.id = doc.id;
-      // Get the items in the list
-      const itemsCol = collection(db, `lists/${listId}/items`);
-      const itemsSnapshot = await getDocs(itemsCol);
-      list.items = await Promise.all(
-        itemsSnapshot.docs.map(async (doc) => {
-          const item = doc.data() as Item;
-          item.id = doc.id;
-          return item;
-        }),
-      );
       return list;
     }
 

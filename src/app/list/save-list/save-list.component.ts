@@ -35,7 +35,7 @@ export class SaveListComponent {
     let user = await this.firebase.createUserIfNeeded(email);
     if (!user) return;
 
-    await this.firebase.saveList(user, this.list);
+    await this.firebase.addToSavedLists(user, this.list);
     this.snackbar.open('List saved', 'Close', {
       duration: 3000,
     });

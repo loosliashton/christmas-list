@@ -63,6 +63,17 @@
   margin-bottom: 10px;
 }
 
+.buttons-row {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.top-button {
+  margin-right: 10px;
+}
+
 .gradient {
   background: linear-gradient(120deg, #c2a500, #e0c10e, #e4af00);
   background-size: 200% 100%;

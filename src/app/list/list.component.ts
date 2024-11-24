@@ -17,8 +17,6 @@ import { ChangeListNameComponent } from './change-list-name/change-list-name.com
 
 @Component({
   selector: 'app-list',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
 })
@@ -27,6 +25,9 @@ export class ListComponent {
   creator: User | undefined;
   spoilers: boolean = false;
   loading: boolean = true;
+  saveListLoading: boolean = false;
+  cancelEditListLoading: boolean = false;
+  editing: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,32 +38,52 @@ export class ListComponent {
   ) {}
 
   async ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe(async (params) => {
       let id = params.get('id') ?? '';
       if (!id) return;
 
-      // Get the list from the database
-      this.firebase
-        .getList(id)
-        .then(async (list) => {
-          this.list = list as List;
-          if (!list) return;
+      await this.getList(id);
+      if (!this.list) return;
 
-          // Get the creator of the list
-          await this.firebase.getUserById(list.creatorID).then((creator) => {
-            if (!creator) return;
-            this.creator = creator;
-            this.titleService.setTitle(`${this.creator?.name}'s List`);
-            // Force the page name to update
-            this.cdr.detectChanges();
-          });
-        })
-        .finally(async () => {
-          // Check to see if the user wants spoilers
-          this.spoilers = await this.openSpoilerPrompt();
-          this.loading = false;
-        });
+      // Get the creator of the list
+      await this.firebase.getUserById(this.list.creatorID).then((creator) => {
+        if (!creator) return;
+        this.creator = creator;
+        this.titleService.setTitle(`${this.creator?.name}'s List`);
+        // Force the page name to update
+        this.cdr.detectChanges();
+      });
+
+      // Check to see if the user wants spoilers
+      this.spoilers = await this.openSpoilerPrompt();
+      this.loading = false;
     });
+  }
+
+  async getList(id: string) {
+    await this.firebase.getList(id).then(async (list) => {
+      this.list = list as List;
+    });
+  }
+
+  async editList() {
+    if (!this.editing) {
+      this.editing = true;
+    } else {
+      this.cancelEditListLoading = true;
+      await this.getList(this.list!.id!);
+      this.editing = false;
+      this.cancelEditListLoading = false;
+    }
+  }
+
+  async saveList() {
+    if (this.list) {
+      this.saveListLoading = true;
+      await this.firebase.editList(this.list);
+      this.editing = false;
+      this.saveListLoading = false;
+    }
   }
 
   openItemModal(item: Item) {
@@ -162,5 +183,17 @@ export class ListComponent {
     dialogRef.afterClosed().subscribe((result) => {
       this.refreshData();
     });
+  }
+
+  moveItem(index: number, direction: string) {
+    this.swapItems(index, index + (direction === 'up' ? -1 : 1));
+  }
+
+  swapItems(index1: number, index2: number) {
+    if (this.list) {
+      const temp = this.list.items![index1];
+      this.list.items![index1] = this.list.items![index2];
+      this.list.items![index2] = temp;
+    }
   }
 }

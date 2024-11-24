@@ -15,7 +15,13 @@
     <div class="form-field-container">
       <mat-form-field>
         <mat-label>Item URL</mat-label>
-        <input matInput placeholder="Enter a URL..." #itemUrl [value]="url" />
+        <input
+          matInput
+          placeholder="Enter a URL..."
+          #itemUrl
+          [value]="url"
+          (focus)="itemUrl.select()"
+        />
       </mat-form-field>
     </div>
     <div class="form-field-container">

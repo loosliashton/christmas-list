@@ -94,7 +94,6 @@ export class FirebaseService {
   }
 
   async saveList(list: List): Promise<boolean> {
-    await new Promise(resolve => setTimeout(resolve, 1000));
     const listDocRef = doc(db, 'lists', list.id!);
     await updateDoc(listDocRef, list as any).catch((error) => {
       console.log(error);

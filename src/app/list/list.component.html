@@ -69,10 +69,10 @@
         </button>
       </div>
     }
-    @if (!spoilers) {
-      <div class="list">
-        @for (item of list?.items; track item.id; let i = $index) {
-          <div class="list-row">
+    <div class="list" [ngClass]="{ disabled: saveListLoading }">
+      @for (item of list?.items; track $index; let i = $index) {
+        <div class="list-row">
+          @if (!spoilers) {
             <div
               class="item"
               style="
@@ -87,7 +87,7 @@
               <button class="edit-button blue" (click)="editItem(item)">
                 <i class="fa-solid fa-pen fa-lg white-icon"></i>
               </button>
-              <button class="delete-button red" (click)="deleteItem(item.id!)">
+              <button class="delete-button red" (click)="deleteItem(i)">
                 <i class="fa-solid fa-trash fa-lg white-icon"></i>
               </button>
             } @else {
@@ -106,13 +106,7 @@
                 <i class="fa-solid fa-arrow-down fa-lg white-icon"></i>
               </button>
             }
-          </div>
-        }
-      </div>
-    } @else {
-      <div class="list">
-        @for (item of list?.items; track item.id) {
-          <div class="list-row">
+          } @else {
             <div
               class="item"
               (click)="openItemModal(item)"
@@ -120,10 +114,11 @@
             >
               <div class="item-name">{{ item.name }}</div>
             </div>
-          </div>
-        }
-      </div>
-    }
+          }
+        </div>
+      }
+    </div>
+
     @if (!spoilers && !editing) {
       <div class="buttons">
         <button class="round-button green" (click)="openAddModal()">

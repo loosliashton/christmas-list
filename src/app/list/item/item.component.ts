@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Item } from 'src/models/item';
 import { FirebaseService } from 'src/services/firebase.service';
 
@@ -11,23 +11,18 @@ import { FirebaseService } from 'src/services/firebase.service';
 })
 export class ItemComponent {
   item: Item;
-  listId: string;
   spoilers: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private firebase: FirebaseService,
+    public dialogRef: MatDialogRef<ItemComponent>
   ) {
     this.item = data.item;
-    this.listId = data.listId;
     this.spoilers = data.spoilers;
   }
 
   togglePurchase() {
-    this.firebase.purchaseItem(
-      this.listId,
-      this.item.id!,
-      !this.item.purchased,
-    );
+    this.item.purchased = !this.item.purchased;
+    this.dialogRef.close(true);
   }
 }

@@ -3,6 +3,15 @@
   <p>Click "No" to see details about what has been purchased!</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close (click)="onSelect(true)">No (Show Spoilers)</button>
-  <button mat-button color="primary" [mat-dialog-close]="true" (click)="onSelect(false)">Yes</button>
+  <button mat-button mat-dialog-close (click)="onSelect(true)">
+    No (Show Spoilers)
+  </button>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    class="yes-button"
+    (click)="onSelect(false)"
+  >
+    Yes
+  </button>
 </mat-dialog-actions>

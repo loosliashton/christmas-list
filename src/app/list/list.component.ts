@@ -13,7 +13,7 @@ import { Title } from '@angular/platform-browser';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SaveListComponent } from './save-list/save-list.component';
 import { ShareComponent } from './share/share.component';
-import { ChangeListNameComponent } from './change-list-name/change-list-name.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list',
@@ -35,6 +35,7 @@ export class ListComponent {
     public dialog: MatDialog,
     private titleService: Title,
     private cdr: ChangeDetectorRef,
+    private snackbar: MatSnackBar,
   ) {}
 
   async ngOnInit() {
@@ -80,9 +81,14 @@ export class ListComponent {
   async saveList() {
     if (this.list) {
       this.saveListLoading = true;
-      await this.firebase.editList(this.list);
-      this.editing = false;
+      if (!(await this.firebase.saveList(this.list))) {
+        this.snackbar.open('Error saving list', 'Close', { duration: 3000 });
+        this.getList(this.list.id!);
+      } else {
+        this.snackbar.open('List updated', 'Close', { duration: 3000 });
+      }
       this.saveListLoading = false;
+      this.editing = false;
     }
   }
 
@@ -96,19 +102,19 @@ export class ListComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.refreshData();
+      if (result) this.saveList();
     });
   }
 
   openAddModal() {
     const dialogRef = this.dialog.open(AddItemComponent, {
       data: {
-        listId: this.list!.id,
+        list: this.list,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.refreshData();
+      if (result) this.saveList();
     });
   }
 
@@ -131,11 +137,11 @@ export class ListComponent {
     return dialogRef.afterClosed().toPromise();
   }
 
-  deleteItem(itemId: string) {
+  deleteItem(index: number) {
     if (confirm('Are you sure you want to delete this item?')) {
       if (this.list) {
-        this.firebase.removeFromList(this.list.id!, itemId);
-        this.refreshData();
+        this.list.items?.splice(index, 1);
+        this.saveList();
       }
     }
   }
@@ -143,13 +149,13 @@ export class ListComponent {
   editItem(item: Item) {
     const dialogRef = this.dialog.open(AddItemComponent, {
       data: {
-        listId: this.list!.id,
+        list: this.list,
         item: item,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.refreshData();
+      if (result) this.saveList();
     });
   }
 
@@ -163,18 +169,6 @@ export class ListComponent {
 
   openShareModal() {
     const dialogRef = this.dialog.open(ShareComponent, {
-      data: {
-        list: this.list,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      this.refreshData();
-    });
-  }
-
-  changeListName() {
-    const dialogRef = this.dialog.open(ChangeListNameComponent, {
       data: {
         list: this.list,
       },

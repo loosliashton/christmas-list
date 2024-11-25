@@ -21,7 +21,6 @@ import { ChangeNameComponent } from './my-lists/change-name/change-name.componen
 import { SuggestionsComponent } from './list/suggestions/suggestions.component';
 import { SaveListComponent } from './list/save-list/save-list.component';
 import { ShareComponent } from './list/share/share.component';
-import { ChangeListNameComponent } from './list/change-list-name/change-list-name.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -44,7 +43,6 @@ const routes: Routes = [
     SuggestionsComponent,
     SaveListComponent,
     ShareComponent,
-    ChangeListNameComponent,
     ListComponent,
   ],
   imports: [

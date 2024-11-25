@@ -11,6 +11,7 @@ import { User } from 'src/models/user';
 })
 export class AddListComponent {
   user: User;
+  loading: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,7 +23,9 @@ export class AddListComponent {
   }
 
   async addList(listName: string) {
+    this.loading = true;
     await this.firebase.addList(this.user, listName);
+    this.loading = false;
     this.snackbar.open(`"${listName}" added successfully`, 'Close', {
       duration: 2000,
     });

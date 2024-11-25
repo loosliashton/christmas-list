@@ -46,6 +46,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .highlighted {
@@ -61,6 +69,17 @@
   align-items: center;
   flex-direction: column;
   margin-bottom: 10px;
+}
+
+.buttons-row {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.top-button {
+  margin-right: 10px;
 }
 
 .gradient {

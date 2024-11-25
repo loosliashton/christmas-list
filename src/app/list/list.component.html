@@ -1,12 +1,13 @@
 <h4 class="center pad-top">{{ creator?.name }}</h4>
-<div class="center header pad-top">
-  @if (!spoilers && !loading) {
-    <button class="name-edit-button green" (click)="changeListName()">
-      <i class="fa-solid fa-pen fa-sm white-icon"></i>
-    </button>
-  }
-  <h1 class="center">{{ list?.name }}</h1>
-</div>
+@if (!editing) {
+  <h1 class="center header pad-top">{{ list?.name }}</h1>
+} @else {
+  <div class="center header pad-top">
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="list!.name" />
+    </mat-form-field>
+  </div>
+}
 @if (loading) {
   <div class="loading center pad-top">
     <div class="spinner center pad-top"></div>
@@ -14,50 +15,98 @@
 } @else {
   <div style="padding-bottom: 80px">
     @if (!spoilers) {
-      <div class="center pad-top">
-        <button class="btn btn-light" (click)="openShareModal()">
-          <i class="fa-solid fa-share fa-md black-icon"></i>
-          Share
-        </button>
-      </div>
+      @if (!editing) {
+        <div class="center pad-top buttons-row">
+          <button class="btn btn-light top-button" (click)="openShareModal()">
+            <i class="fa-solid fa-share fa-md black-icon"></i>
+            Share
+          </button>
+          <button class="btn btn-light top-button" (click)="editList()">
+            <i class="fa-solid fa-edit fa-md black-icon"></i>
+            Edit
+          </button>
+        </div>
+      } @else {
+        <div class="center pad-top buttons-row">
+          <button
+            class="btn btn-light top-button"
+            (click)="saveListLoading ? null : saveList()"
+          >
+            @if (saveListLoading) {
+              <mat-progress-spinner
+                mode="indeterminate"
+                diameter="25"
+                [strokeWidth]="2"
+              ></mat-progress-spinner>
+            } @else {
+              <i class="fa-solid fa-save fa-md black-icon"></i> Save
+            }
+          </button>
+          <button
+            class="btn btn-light top-button"
+            (click)="cancelEditListLoading ? null : editList()"
+          >
+            @if (cancelEditListLoading) {
+              <mat-progress-spinner
+                mode="indeterminate"
+                diameter="25"
+                [strokeWidth]="2"
+              ></mat-progress-spinner>
+            } @else {
+              <i class="fa-solid fa-xmark fa-md black-icon"></i> Cancel
+            }
+          </button>
+        </div>
+      }
     } @else {
       <div class="buttons">
         <button class="btn save-list-button" (click)="openSaveModal()">
           <i
-            class="fa-solid fa-save fa-lg black-icon"
+            class="fa-solid fa-plus fa-lg black-icon"
             style="padding-right: 5px"
           ></i>
-          Save List
+          Add to Saved Lists
         </button>
       </div>
     }
-    @if (!spoilers) {
-      <div class="list">
-        @for (item of list?.items; track item.id) {
-          <div class="list-row">
+    <div class="list" [ngClass]="{ disabled: saveListLoading }">
+      @for (item of list?.items; track $index; let i = $index) {
+        <div class="list-row">
+          @if (!spoilers) {
             <div
               class="item"
               style="
                 border-bottom-right-radius: 0%;
                 border-top-right-radius: 0%;
               "
-              (click)="openItemModal(item)"
+              (click)="editing ? null : openItemModal(item)"
             >
               <div class="item-name">{{ item.name }}</div>
             </div>
-            <button class="edit-button blue" (click)="editItem(item)">
-              <i class="fa-solid fa-pen fa-lg white-icon"></i>
-            </button>
-            <button class="delete-button red" (click)="deleteItem(item.id!)">
-              <i class="fa-solid fa-trash fa-lg white-icon"></i>
-            </button>
-          </div>
-        }
-      </div>
-    } @else {
-      <div class="list">
-        @for (item of list?.items; track item) {
-          <div class="list-row">
+            @if (!editing) {
+              <button class="edit-button blue" (click)="editItem(item)">
+                <i class="fa-solid fa-pen fa-lg white-icon"></i>
+              </button>
+              <button class="delete-button red" (click)="deleteItem(i)">
+                <i class="fa-solid fa-trash fa-lg white-icon"></i>
+              </button>
+            } @else {
+              <button
+                class="edit-button gray"
+                (click)="moveItem(i, 'up')"
+                [disabled]="i === 0"
+              >
+                <i class="fa-solid fa-arrow-up fa-lg white-icon"></i>
+              </button>
+              <button
+                class="delete-button gray"
+                (click)="moveItem(i, 'down')"
+                [disabled]="i === list!.items!.length - 1"
+              >
+                <i class="fa-solid fa-arrow-down fa-lg white-icon"></i>
+              </button>
+            }
+          } @else {
             <div
               class="item"
               (click)="openItemModal(item)"
@@ -65,11 +114,12 @@
             >
               <div class="item-name">{{ item.name }}</div>
             </div>
-          </div>
-        }
-      </div>
-    }
-    @if (!spoilers) {
+          }
+        </div>
+      }
+    </div>
+
+    @if (!spoilers && !editing) {
       <div class="buttons">
         <button class="round-button green" (click)="openAddModal()">
           <i class="fa-solid fa-plus fa-xl white-icon"></i>

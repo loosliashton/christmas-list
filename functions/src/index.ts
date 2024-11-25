@@ -15,7 +15,7 @@ const model = gemini.getGenerativeModel({
 const generationConfig = {
   temperature: 1,
   topP: 0.95,
-  topK: 64,
+  topK: 40,
   maxOutputTokens: 8192,
   responseMimeType: 'application/json',
 };
@@ -54,7 +54,7 @@ const amazonAsin = require('amazon-asin');
 exports.getCamelLink = functions.https.onCall(
   async (data: { url: string }, context: any) => {
     const result = await amazonAsin.asyncParseAsin(data.url);
-    if (!result.ASIN) return null;
+    if (!result.ASIN) return '';
     return `https://camelcamelcamel.com/product/${result.ASIN}`;
   },
 );

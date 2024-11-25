@@ -14,7 +14,6 @@ import {
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { User } from '../models/user';
 import { List } from '../models/list';
-import { Item } from '../models/item';
 
 const db = getFirestore(app);
 const functions = getFunctions(app);
@@ -94,11 +93,13 @@ export class FirebaseService {
     });
   }
 
-  async editListName(listId: string, newName: string): Promise<void> {
-    const listDocRef = doc(db, 'lists', listId);
-    await updateDoc(listDocRef, {
-      name: newName,
+  async saveList(list: List): Promise<boolean> {
+    const listDocRef = doc(db, 'lists', list.id!);
+    await updateDoc(listDocRef, list as any).catch((error) => {
+      console.log(error);
+      return false;
     });
+    return true;
   }
 
   async deleteList(user: User, list: List) {
@@ -145,25 +146,13 @@ export class FirebaseService {
         const doc = querySnapshot.docs[0];
         const list = doc.data() as List;
         list.id = doc.id;
-
-        // Get the items in the list
-        const itemsCol = collection(db, `lists/${listId}/items`);
-        const itemsSnapshot = await getDocs(itemsCol);
-        list.items = await Promise.all(
-          itemsSnapshot.docs.map(async (doc) => {
-            const item = doc.data() as Item;
-            item.id = doc.id;
-            return item;
-          }),
-        );
-
         lists.push(list);
       }
     }
     return lists;
   }
 
-  async saveList(user: User, list: List) {
+  async addToSavedLists(user: User, list: List) {
     if (user.savedLists?.includes(list.id!) || user.lists?.includes(list.id!))
       return;
     // Update the user's savedLists array in the database
@@ -173,7 +162,7 @@ export class FirebaseService {
     });
   }
 
-  async unsaveList(user: User, list: List) {
+  async removeFromSavedLists(user: User, list: List) {
     if (!user.savedLists?.includes(list.id!)) return;
     // Update the user's savedLists array in the database
     const userDocRef = doc(db, 'users', user.id!);
@@ -190,64 +179,10 @@ export class FirebaseService {
       const doc = querySnapshot.docs[0];
       const list = doc.data() as List;
       list.id = doc.id;
-      // Get the items in the list
-      const itemsCol = collection(db, `lists/${listId}/items`);
-      const itemsSnapshot = await getDocs(itemsCol);
-      list.items = await Promise.all(
-        itemsSnapshot.docs.map(async (doc) => {
-          const item = doc.data() as Item;
-          item.id = doc.id;
-          return item;
-        }),
-      );
       return list;
     }
 
     return null;
-  }
-
-  async addToList(item: Item, listId: string): Promise<void> {
-    if (this.isAmazonUrl(item.url)) {
-      item.camelUrl = await this.getCamelLink(item.url);
-    }
-    const itemsCol = collection(db, `lists/${listId}/items`);
-    await addDoc(itemsCol, item);
-  }
-
-  async editItem(item: Item, listId: string): Promise<void> {
-    if (listId && item.id) {
-      if (this.isAmazonUrl(item.url)) {
-        item.camelUrl = await this.getCamelLink(item.url);
-      } else {
-        item.camelUrl = null;
-      }
-      const itemDocRef = doc(db, `lists/${listId}/items`, item.id);
-      await updateDoc(itemDocRef, {
-        // Don't update purchased status
-        name: item.name,
-        url: item.url,
-        details: item.details,
-        camelUrl: item.camelUrl,
-      });
-    }
-  }
-
-  async removeFromList(listId: string, itemId: string): Promise<void> {
-    if (listId && itemId) {
-      const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
-      await deleteDoc(itemDocRef);
-    }
-  }
-
-  async purchaseItem(
-    listId: string,
-    itemId: string,
-    purchased: boolean,
-  ): Promise<void> {
-    const itemDocRef = doc(db, `lists/${listId}/items`, itemId);
-    await updateDoc(itemDocRef, {
-      purchased: purchased,
-    });
   }
 
   async changeName(id: string, name: string) {
@@ -278,7 +213,7 @@ export class FirebaseService {
       });
   }
 
-  async getCamelLink(url: string): Promise<string | null> {
+  async getCamelLink(url: string): Promise<string> {
     const getCamelLink = httpsCallable(functions, 'getCamelLink');
 
     return getCamelLink({ url: url })

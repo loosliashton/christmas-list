@@ -59,7 +59,7 @@ export class MyListsComponent implements OnInit {
   async unsaveList(list: List, event: Event) {
     event.stopPropagation();
     if (!confirm('Are you sure you want to unsave this list?')) return;
-    await this.firebase.unsaveList(this.user!, list);
+    await this.firebase.removeFromSavedLists(this.user!, list);
     this.ngOnInit();
   }
 

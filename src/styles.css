@@ -31,6 +31,10 @@ button {
   background-color: #138496;
 }
 
+.gray {
+  background-color: darkgray;
+}
+
 .green:focus,
 .green:hover,
 .green:active {

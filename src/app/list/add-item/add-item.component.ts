@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseService } from 'src/services/firebase.service';
 import { Item } from 'src/models/item';
+import { List } from 'src/models/list';
 
 @Component({
   selector: 'app-add-item',
@@ -10,19 +11,20 @@ import { Item } from 'src/models/item';
   styleUrl: './add-item.component.css',
 })
 export class AddItemComponent {
-  listId: string;
+  list: List;
   item: Item | undefined;
   name: string = '';
   url: string = '';
   details: string = '';
+  loading: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: MatSnackBar,
     private firebase: FirebaseService,
-    public dialogRef: MatDialogRef<AddItemComponent>
+    public dialogRef: MatDialogRef<AddItemComponent>,
   ) {
-    this.listId = data.listId;
+    this.list = data.list;
     this.item = data.item;
   }
 
@@ -42,7 +44,7 @@ export class AddItemComponent {
       });
       return;
     }
-
+    
     // Check if URL is valid
     if (url && !url.startsWith('http')) {
       this.snackbar.open('Please enter a valid URL', 'Close', {
@@ -51,25 +53,33 @@ export class AddItemComponent {
       return;
     }
 
+    let camelUrl = '';
+    if (this.firebase.isAmazonUrl(url)) {
+      this.loading = true;
+      camelUrl = await this.firebase.getCamelLink(url);
+      this.loading = false;
+    }
+    
     let item: Item = {
       name: name,
       url: url,
       purchased: false,
       details: details,
+      camelUrl: camelUrl,
     };
 
     if (this.item) {
+      // Update the item object with the new values
       item = this.item;
       item.name = name;
       item.url = url;
       item.details = details;
-      await this.firebase.editItem(item, this.listId);
+      item.camelUrl = camelUrl;
     } else {
-      await this.firebase.addToList(item, this.listId);
+      // Add the item to the list
+      this.list.items?.push(item);
     }
-    this.snackbar.open(`"${name}" added`, 'Close', {
-      duration: 2000,
-    });
-    this.dialogRef.close();
+
+    this.dialogRef.close(true);
   }
 }

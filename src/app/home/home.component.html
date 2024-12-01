@@ -36,11 +36,13 @@
     <form class="form center">
       <div class="row-layout">
         <input
+          #emailInput
           type="email"
           class="form-control rounded-input"
           placeholder="Enter email"
           [(ngModel)]="email"
           name="email"
+          (focus)="emailInput.select()"
         />
         <button class="submit-button green" (click)="goToMyLists(email)">
           <i class="fa-solid fa-gift white-icon"></i>

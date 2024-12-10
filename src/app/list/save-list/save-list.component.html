@@ -4,12 +4,22 @@
     <div class="form-field-container">
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput placeholder="Enter your email..." #email />
+        <input matInput placeholder="Enter your email..." [(ngModel)]="email" />
       </mat-form-field>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button (click)="saveList(email.value)">Save</button>
+    @if (!loading) {
+      <button mat-button (click)="saveList()">Save</button>
+    } @else {
+      <button mat-button>
+        <mat-progress-spinner
+          mode="indeterminate"
+          diameter="20"
+          [strokeWidth]="2"
+        ></mat-progress-spinner>
+      </button>
+    }
   </mat-dialog-actions>
 </div>

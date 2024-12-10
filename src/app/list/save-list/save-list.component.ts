@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseService } from 'src/services/firebase.service';
@@ -9,36 +9,44 @@ import { List } from 'src/models/list';
   templateUrl: './save-list.component.html',
   styleUrl: './save-list.component.css',
 })
-export class SaveListComponent {
+export class SaveListComponent implements OnInit {
   list: List;
+  email: string = '';
+  loading: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<SaveListComponent>,
     private snackbar: MatSnackBar,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
   ) {
     this.list = data.list;
   }
 
-  async saveList(email: string) {
-    if (!email) return;
+  ngOnInit(): void {
+    this.email = localStorage.getItem('lastEmail') || '';
+  }
+
+  async saveList() {
+    if (!this.email) return;
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(this.email)) {
       this.snackbar.open('Invalid email address', 'Close', {
         duration: 3000,
       });
       return;
     }
 
-    let user = await this.firebase.createUserIfNeeded(email);
+    this.loading = true;
+    let user = await this.firebase.createUserIfNeeded(this.email);
     if (!user) return;
 
     await this.firebase.addToSavedLists(user, this.list);
     this.snackbar.open('List saved', 'Close', {
       duration: 3000,
     });
+    this.loading = false;
     this.dialogRef.close(true);
   }
 }

@@ -62,6 +62,7 @@
 
 .highlighted > div {
   color: gray;
+  text-decoration: line-through;
 }
 
 .buttons {

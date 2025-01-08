@@ -58,6 +58,12 @@ export class ListComponent {
       // Check to see if the user wants spoilers
       this.spoilers = await this.openSpoilerPrompt();
       this.loading = false;
+
+      // Save this list to local recent lists
+      let recentLists = JSON.parse(localStorage.getItem('recentLists') || '{}');
+
+      recentLists[id] = new Date();
+      localStorage.setItem('recentLists', JSON.stringify(recentLists));
     });
   }
 

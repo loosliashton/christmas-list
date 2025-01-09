@@ -137,6 +137,10 @@ export class FirebaseService {
 
   async getLists(user: User, saved: boolean): Promise<List[]> {
     let listIds = (saved ? user.savedLists : user.lists) ?? [];
+    return this.getListsFromIds(listIds);
+  }
+
+  async getListsFromIds(listIds: string[]): Promise<List[]> {
     let lists: List[] = [];
     for (let listId of listIds) {
       const listCol = collection(db, `lists`);

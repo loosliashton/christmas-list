@@ -57,28 +57,28 @@
     @if (!loadingSaved && !loading) {
       <div class="lists">
         @for (list of savedLists; track list; let i = $index) {
-          <div
-            class="saved-list"
-            (click)="navigateToList(list)"
-            >
+          <div class="saved-list" (click)="navigateToList(list)">
             <div class="list-header">
               <p>
                 <strong>{{ list.name }}</strong
-                  ><br />{{ savedListCreators[i] }}
+                ><br />{{ savedListCreators[i] }}
+              </p>
+              <div class="list-info">
+                <p>
+                  {{ list.items?.length }}
+                  {{ list.items?.length === 1 ? "item" : "items" }}
                 </p>
-                <div class="list-info">
-                  <p>
-                    {{ list.items?.length }}
-                    {{ list.items?.length === 1 ? "item" : "items" }}
-                  </p>
-                  <div (click)="unsaveList(list, $event)">
-                    <i class="fa-solid fa-xmark fa-xl" style="padding-left: 10px"></i>
-                  </div>
+                <div (click)="unsaveList(list, $event)">
+                  <i
+                    class="fa-solid fa-xmark fa-xl"
+                    style="padding-left: 10px"
+                  ></i>
                 </div>
               </div>
             </div>
-          }
-        </div>
-      }
-    </div>
-  }
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

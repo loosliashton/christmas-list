@@ -1,58 +1,96 @@
 <body [ngClass]="{ 'christmas-body': christmasTheme }">
   <div class="snowflakes">
-    @if (christmasTheme) {
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-      <div class="snowflake"></div>
-    }
-    <div class="header">
-      <h1 [ngClass]="{ 'white-title': christmasTheme }" class="center pad-top">
-        Gift Lists
-      </h1>
-      <p
-        [ngClass]="{
-          'explain-text': !christmasTheme,
-          'explain-text-christmas': christmasTheme,
-        }"
-      >
-        Enter your email to view your lists or create a new one.
-      </p>
-    </div>
-    <form class="form center">
-      <div class="row-layout">
-        <input
-          #emailInput
-          type="email"
-          class="form-control rounded-input"
-          placeholder="Enter email"
-          [(ngModel)]="email"
-          name="email"
-          (focus)="emailInput.select()"
-        />
-        <button class="submit-button green" (click)="goToMyLists(email)">
-          <i class="fa-solid fa-gift white-icon"></i>
-        </button>
+    <div>
+      @if (christmasTheme) {
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+      }
+      <div class="header">
+        <h1
+          [ngClass]="{ 'white-title': christmasTheme }"
+          class="center pad-top"
+        >
+          Gift Lists
+        </h1>
+        <p
+          [ngClass]="{
+            'explain-text': !christmasTheme,
+            'explain-text-christmas': christmasTheme,
+          }"
+        >
+          Enter your email to view your lists or create a new one.
+        </p>
       </div>
-    </form>
-    @if (badEmail) {
-      <p class="center" style="color: gray; padding-top: 10px">
-        Please enter a valid email address.
-      </p>
+      <form class="form center">
+        <div class="row-layout">
+          <input
+            #emailInput
+            type="email"
+            class="form-control rounded-input"
+            placeholder="Enter email"
+            [(ngModel)]="email"
+            name="email"
+            (focus)="emailInput.select()"
+          />
+          <button class="submit-button green" (click)="goToMyLists(email)">
+            <i class="fa-solid fa-gift white-icon"></i>
+          </button>
+        </div>
+      </form>
+      @if (badEmail) {
+        <p class="center" style="color: gray; padding-top: 10px">
+          Please enter a valid email address.
+        </p>
+      }
+    </div>
+    @if (!loading) {
+      @if (recentLists.length) {
+        <div class="lists center pad-top">
+          <h3 [ngClass]="{ 'white-title': christmasTheme }">Recent Lists</h3>
+          @for (list of recentLists; track list; let i = $index) {
+            <div class="saved-list" (click)="navigateToList(list)">
+              <div class="list-header">
+                <p>
+                  <strong>{{ list.name }}</strong
+                  ><br />{{ recentListCreators[i] }}
+                </p>
+                <div class="list-info">
+                  <p>
+                    {{ list.items?.length }}
+                    {{ list.items?.length === 1 ? "item" : "items" }}
+                  </p>
+                  <div (click)="removeList(list, $event)">
+                    <i
+                      class="fa-solid fa-xmark fa-xl"
+                      style="padding-left: 10px"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    } @else {
+      <div class="loading center pad-top">
+        <div class="spinner"></div>
+      </div>
     }
   </div>
 </body>

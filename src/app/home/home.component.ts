@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { List } from 'src/models/list';
+import { FirebaseService } from 'src/services/firebase.service';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +12,16 @@ export class HomeComponent implements OnInit {
   badEmail: boolean = false;
   email: string = '';
   christmasTheme: boolean = false;
+  recentLists: List[] = [];
+  recentListCreators: string[] = [];
+  loading: boolean = false;
 
-  ngOnInit(): void {
+  constructor(
+    private router: Router,
+    private firebase: FirebaseService,
+  ) {}
+
+  async ngOnInit() {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
 
@@ -24,9 +34,35 @@ export class HomeComponent implements OnInit {
     if (lastEmail) {
       this.email = lastEmail;
     }
+
+    // Retrieve recent lists
+    const recentListsObject = JSON.parse(
+      localStorage.getItem('recentLists') || '{}',
+    );
+    let f = Object.keys(recentListsObject).length;
+    if (!Object.keys(recentListsObject).length) return;
+    this.loading = true;
+
+    // Sort the recent lists by date
+    let sorted = Object.keys(recentListsObject).sort((a, b) => {
+      let dateA = new Date(recentListsObject[a]);
+      let dateB = new Date(recentListsObject[b]);
+      return dateB.getTime() - dateA.getTime();
+    });
+
+    this.recentLists = await this.firebase.getListsFromIds(sorted.slice(0, 5));
+    for (let list of this.recentLists) {
+      let creator = await this.firebase.getUserById(list.creatorID);
+      if (creator) this.recentListCreators.push(creator.name);
+      else this.recentListCreators.push('Unknown');
+    }
+
+    this.loading = false;
   }
 
-  constructor(private router: Router) {}
+  navigateToList(list: List) {
+    this.router.navigate(['/list', list.id]);
+  }
 
   goToMyLists(email: string) {
     this.badEmail = false;
@@ -39,5 +75,19 @@ export class HomeComponent implements OnInit {
     } else {
       this.badEmail = true;
     }
+  }
+
+  removeList(list: List, event: MouseEvent) {
+    event?.stopPropagation();
+    if (!confirm('Remove from recent lists?')) return;
+    let index = this.recentLists.indexOf(list);
+    this.recentLists = this.recentLists.filter((l) => l.id !== list.id);
+    this.recentListCreators = this.recentListCreators.filter(
+      (_name, i) => i !== index,
+    );
+
+    let recentLists = JSON.parse(localStorage.getItem('recentLists') || '{}');
+    delete recentLists[list.id!];
+    localStorage.setItem('recentLists', JSON.stringify(recentLists));
   }
 }

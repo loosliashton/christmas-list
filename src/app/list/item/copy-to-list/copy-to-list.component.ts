@@ -1,28 +1,32 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { List } from 'src/models/list';
 import { Item } from 'src/models/item';
 import { FirebaseService } from 'src/services/firebase.service';
 import { RecentListComponent } from 'src/app/list/recent-list/recent-list.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-copy-to-list',
   standalone: true,
   imports: [CommonModule, MatDialogModule, RecentListComponent],
   templateUrl: './copy-to-list.component.html',
-  styleUrl: './copy-to-list.component.css'
+  styleUrl: './copy-to-list.component.css',
 })
 export class CopyToListComponent implements OnInit {
   recentLists: List[] = [];
   recentListCreators: string[] = [];
   loading: boolean = false;
+  copyLoading: boolean = false;
   item: Item;
 
   constructor(
     private router: Router,
     private firebase: FirebaseService,
+    private snackbar: MatSnackBar,
+    public dialogRef: MatDialogRef<CopyToListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { item: Item },
   ) {
     this.item = data.item;
@@ -55,5 +59,15 @@ export class CopyToListComponent implements OnInit {
 
   navigateToList(list: List) {
     this.router.navigate(['/list', list.id]);
+  }
+
+  async copyItemToList(list: List) {
+    list.items?.push(this.item);
+    this.copyLoading = true;
+    await this.firebase.saveList(list);
+    this.snackbar.open('Item copied', 'Close', { duration: 3000 });
+    this.copyLoading = false;
+    // Close this dialog
+    this.dialogRef.close();
   }
 }

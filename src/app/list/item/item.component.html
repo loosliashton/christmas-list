@@ -16,13 +16,12 @@
     </a>
   }
   @if (spoilers) {
-    <button
-      mat-button
-      color="primary"
-      (click)="togglePurchase()"
-    >
+    <button mat-button color="primary" (click)="togglePurchase()">
       {{ item.purchased ? "Mark as Not Purchased" : "Mark as Purchased" }}
     </button>
   }
+  <button mat-button color="accent" (click)="openCopyToListModal()">
+    Copy To List
+  </button>
   <button mat-button mat-dialog-close>Close</button>
 </mat-dialog-actions>

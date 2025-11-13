@@ -78,7 +78,6 @@ export class HomeComponent implements OnInit {
   }
 
   removeList(list: List, event: MouseEvent) {
-    event?.stopPropagation();
     if (!confirm('Remove from recent lists?')) return;
     let index = this.recentLists.indexOf(list);
     this.recentLists = this.recentLists.filter((l) => l.id !== list.id);

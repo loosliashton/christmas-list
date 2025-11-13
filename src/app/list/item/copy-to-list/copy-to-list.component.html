@@ -1,0 +1,27 @@
+@if (!loading) {
+  @if (recentLists.length) {
+    <h3 mat-dialog-title>Copy to List</h3>
+    <mat-dialog-content>
+      <div class="lists">
+        @for (list of recentLists; track list; let i = $index) {
+          <app-recent-list
+            [list]="list"
+            [creator]="recentListCreators[i]"
+            (listClicked)="navigateToList($event)"
+          ></app-recent-list>
+        }
+      </div>
+    </mat-dialog-content>
+  } @else {
+    <h3 mat-dialog-title>No Recent Lists</h3>
+    <mat-dialog-content>
+      <p>Start by creating a new list or visiting an existing one.</p>
+    </mat-dialog-content>
+  }
+} @else {
+  <mat-dialog-content>
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+  </mat-dialog-content>
+}

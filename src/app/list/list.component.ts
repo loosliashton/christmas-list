@@ -62,8 +62,15 @@ export class ListComponent {
       recentLists[id] = new Date();
       localStorage.setItem('recentLists', JSON.stringify(recentLists));
 
-      // Check to see if the user wants spoilers
-      this.spoilers = await this.openSpoilerPrompt();
+      // Check if user has set a spoiler preference for this list
+      let spoilerChoices = localStorage.getItem('spoilerChoices');
+      let spoilerChoicesMap = spoilerChoices ? JSON.parse(spoilerChoices) : {};
+      if (spoilerChoicesMap[id] !== undefined) {
+        this.spoilers = spoilerChoicesMap[id];
+      } else {
+        // Check to see if the user wants spoilers
+        this.spoilers = await this.openSpoilerPrompt();
+      }
       this.loading = false;
     });
   }
@@ -151,7 +158,11 @@ export class ListComponent {
   }
 
   openSpoilerPrompt(): Promise<boolean> {
-    const dialogRef = this.dialog.open(SpoilerPromptComponent);
+    const dialogRef = this.dialog.open(SpoilerPromptComponent, {
+      data: {
+        listId: this.list!.id,
+      },
+    });
     return dialogRef.afterClosed().toPromise();
   }
 

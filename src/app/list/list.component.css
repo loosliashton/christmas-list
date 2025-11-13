@@ -106,6 +106,7 @@
     justify-self: center;
     margin-left: auto;
     margin-right: auto;
+    width: 90%;
   }
 
   .top-button {
@@ -119,6 +120,7 @@
     line-height: 1.2;
     width: 100%;
     padding: 8px 12px;
+    height: 50px;
   }
 
   .top-button:nth-child(n+3) {

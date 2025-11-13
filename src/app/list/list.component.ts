@@ -29,6 +29,7 @@ export class ListComponent {
   saveListLoading: boolean = false;
   cancelEditListLoading: boolean = false;
   editing: boolean = false;
+  userHasSavedSetting = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -62,8 +63,19 @@ export class ListComponent {
       recentLists[id] = new Date();
       localStorage.setItem('recentLists', JSON.stringify(recentLists));
 
-      // Check to see if the user wants spoilers
-      this.spoilers = await this.openSpoilerPrompt();
+      // Check if user has set a spoiler preference for this list
+      let spoilerChoices = localStorage.getItem('spoilerChoices');
+      let spoilerChoicesMap = spoilerChoices ? JSON.parse(spoilerChoices) : {};
+      if (spoilerChoicesMap[id] !== undefined) {
+        this.spoilers = spoilerChoicesMap[id];
+      } else {
+        // Check to see if the user wants spoilers
+        this.spoilers = await this.openSpoilerPrompt();
+      }
+
+      // Check if user has saved a spoiler setting for this list
+      this.userHasSavedSetting = this.checkIfUserHasSavedSpoilerSetting();
+
       this.loading = false;
     });
   }
@@ -151,7 +163,11 @@ export class ListComponent {
   }
 
   openSpoilerPrompt(): Promise<boolean> {
-    const dialogRef = this.dialog.open(SpoilerPromptComponent);
+    const dialogRef = this.dialog.open(SpoilerPromptComponent, {
+      data: {
+        listId: this.list!.id,
+      },
+    });
     return dialogRef.afterClosed().toPromise();
   }
 
@@ -207,5 +223,20 @@ export class ListComponent {
       this.list.items![index1] = this.list.items![index2];
       this.list.items![index2] = temp;
     }
+  }
+
+  checkIfUserHasSavedSpoilerSetting(): boolean {
+    let spoilerChoices = localStorage.getItem('spoilerChoices');
+    let spoilerChoicesMap = spoilerChoices ? JSON.parse(spoilerChoices) : {};
+    return spoilerChoicesMap[this.list!.id!] !== undefined;
+  }
+
+  resetSpoilerPreference() {
+    let spoilerChoices = localStorage.getItem('spoilerChoices');
+    let spoilerChoicesMap = spoilerChoices ? JSON.parse(spoilerChoices) : {};
+    delete spoilerChoicesMap[this.list!.id!];
+    localStorage.setItem('spoilerChoices', JSON.stringify(spoilerChoicesMap));
+    // Refresh page to re-prompt for spoiler preference
+    window.location.reload();
   }
 }

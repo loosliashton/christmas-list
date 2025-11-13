@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 
 import {
   MAT_DIALOG_DATA,
@@ -16,6 +16,7 @@ import { CopyToListComponent } from './copy-to-list/copy-to-list.component';
 export class ItemComponent {
   item: Item;
   spoilers: boolean;
+  @Output() copiedListEvent = new EventEmitter<string>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,6 +36,12 @@ export class ItemComponent {
     const dialogRef = this.dialog.open(CopyToListComponent, {
       data: { item: this.item },
       width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.copiedListEvent.emit(result);
+      }
     });
   }
 }

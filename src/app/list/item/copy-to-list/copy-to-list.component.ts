@@ -67,7 +67,7 @@ export class CopyToListComponent implements OnInit {
     await this.firebase.saveList(list);
     this.snackbar.open('Item copied', 'Close', { duration: 3000 });
     this.copyLoading = false;
-    // Close this dialog
-    this.dialogRef.close();
+    // Close this dialog and report the copied list ID
+    this.dialogRef.close(list.id);
   }
 }

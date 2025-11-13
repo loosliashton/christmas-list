@@ -14,6 +14,7 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SaveListComponent } from './save-list/save-list.component';
 import { ShareComponent } from './share/share.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -106,6 +107,17 @@ export class ListComponent {
         spoilers: this.spoilers,
       },
     });
+
+    let copiedSub: Subscription;
+    if (dialogRef.componentInstance) {
+      copiedSub = dialogRef.componentInstance.copiedListEvent.subscribe(
+        (listId: string) => {
+          if (this.list?.id === listId) {
+            this.refreshData();
+          }
+        },
+      );
+    }
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) this.saveList();

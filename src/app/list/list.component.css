@@ -32,10 +32,6 @@
   width: 60px;
 }
 
-.save-list-button {
-  background-color: rgb(255, 235, 235);
-}
-
 .item-name {
   font-size: 20px;
 }
@@ -92,4 +88,39 @@
 
 .gradient:hover {
   background-position: 0 0;
+}
+
+/* Stack icon and text on narrow screens */
+@media (max-width: 600px) {
+  .buttons-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    justify-items: center;
+    justify-self: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .top-button {
+    margin-right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    white-space: normal;
+    line-height: 1.2;
+    width: 100%;
+  }
+
+  .top-button:nth-child(n+3) {
+    grid-column: 1 / -1;
+  }
+
+  .top-button i {
+    margin-right: 0 !important;
+    display: flex;
+    align-items: center;
+  }
 }

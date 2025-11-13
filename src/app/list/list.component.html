@@ -14,9 +14,9 @@
   </div>
 } @else {
   <div style="padding-bottom: 80px">
-    @if (!spoilers) {
-      @if (!editing) {
-        <div class="center pad-top buttons-row">
+    <div class="center pad-top buttons-row">
+      @if (!spoilers) {
+        @if (!editing) {
           <button class="btn btn-light top-button" (click)="openShareModal()">
             <i class="fa-solid fa-share fa-md black-icon"></i>
             Share
@@ -25,9 +25,7 @@
             <i class="fa-solid fa-edit fa-md black-icon"></i>
             Edit
           </button>
-        </div>
-      } @else {
-        <div class="center pad-top buttons-row">
+        } @else {
           <button
             class="btn btn-light top-button"
             (click)="saveListLoading ? null : saveList()"
@@ -56,19 +54,26 @@
               <i class="fa-solid fa-xmark fa-md black-icon"></i> Cancel
             }
           </button>
-        </div>
-      }
-    } @else {
-      <div class="buttons">
-        <button class="btn save-list-button" (click)="openSaveModal()">
+        }
+      } @else {
+        <button class="btn btn-light top-button" (click)="openSaveModal()">
           <i
             class="fa-solid fa-plus fa-lg black-icon"
             style="padding-right: 5px"
           ></i>
           Add to Saved Lists
         </button>
-      </div>
-    }
+      }
+      @if (!editing && userHasSavedSetting) {
+        <button class="btn btn-light top-button" (click)="resetSpoilerPreference()">
+          <i
+            class="fa-solid fa-arrow-rotate-right fa-lg black-icon"
+            style="padding-right: 5px"
+          ></i>
+          Reset Spoiler Preference
+        </button>
+      }
+    </div>
     <div class="list" [ngClass]="{ disabled: saveListLoading }">
       @for (item of list?.items; track $index; let i = $index) {
         <div class="list-row">

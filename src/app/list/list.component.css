@@ -68,9 +68,15 @@
   margin-right: 10px;
 }
 
-.top-button {
-  margin-right: 10px;
+.btn-light {
+  background-color: #eeeeee;
 }
+
+.btn-light:hover {
+  background-color: #d0d0d0;
+}
+
+.top-button { margin: 0 5px; }
 
 .gradient {
   background: linear-gradient(120deg, #c2a500, #e0c10e, #e4af00);
@@ -112,6 +118,7 @@
     white-space: normal;
     line-height: 1.2;
     width: 100%;
+    padding: 8px 12px;
   }
 
   .top-button:nth-child(n+3) {

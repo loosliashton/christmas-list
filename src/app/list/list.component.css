@@ -49,13 +49,6 @@
   transition: opacity 0.3s ease-in-out;
 }
 
-.disabled {
-  pointer-events: none;
-  opacity: 0.5;
-  cursor: not-allowed;
-  transition: opacity 0.3s ease-in-out;
-}
-
 .highlighted {
   background-color: rgb(243, 243, 243);
 }

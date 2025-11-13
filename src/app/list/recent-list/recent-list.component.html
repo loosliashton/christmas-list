@@ -1,0 +1,19 @@
+<div class="recent-list" (click)="onClick()">
+  <div class="list-header">
+    <p class="list-desc">
+      <strong>{{ list.name }}</strong
+      ><br />{{ creator }}
+    </p>
+    <div class="list-info">
+      <p>
+        {{ list.items?.length }}
+        {{ list.items?.length === 1 ? "item" : "items" }}
+      </p>
+      @if (showDeleteButton) {
+        <div (click)="onDelete($event)">
+          <i class="fa-solid fa-xmark fa-xl" style="padding-left: 10px"></i>
+        </div>
+      }
+    </div>
+  </div>
+</div>

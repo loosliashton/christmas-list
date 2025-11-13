@@ -23,6 +23,7 @@ import { SaveListComponent } from './list/save-list/save-list.component';
 import { ShareComponent } from './list/share/share.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { RecentListComponent } from './list/recent-list/recent-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     FormsModule,
     CommonModule,
+    RecentListComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -10,15 +10,15 @@
   <p>{{ item.details }}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  @if (item.camelUrl) {
-    <a mat-button color="accent" href="{{ item.camelUrl }}" target="_blank">
-      Track Price
-    </a>
-  }
   @if (spoilers) {
     <button mat-button color="primary" (click)="togglePurchase()">
       {{ item.purchased ? "Mark as Not Purchased" : "Mark as Purchased" }}
     </button>
+  }
+  @if (item.camelUrl) {
+    <a mat-button color="accent" href="{{ item.camelUrl }}" target="_blank">
+      Track Price
+    </a>
   }
   <button mat-button color="accent" (click)="openCopyToListModal()">
     Copy To List

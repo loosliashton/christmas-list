@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AddListComponent } from './my-lists/add-list/add-list.component';
@@ -58,6 +59,7 @@ const routes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatExpansionModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
     FormsModule,

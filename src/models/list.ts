@@ -6,4 +6,5 @@ export interface List {
   items?: Item[];
   creatorID: string; // ID
   shortUrl?: string;
+  ideas?: string;
 }

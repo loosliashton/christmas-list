@@ -76,13 +76,15 @@
   background-color: #d0d0d0;
 }
 
-.top-button { margin: 0 5px; }
+.top-button {
+  margin: 0 5px;
+}
 
 .gradient {
   background: linear-gradient(120deg, #c2a500, #e0c10e, #e4af00);
   background-size: 200% 100%;
   background-position: 100% 0;
-  transition: .5s;
+  transition: 0.5s;
   border: none;
   color: white;
   text-align: center;
@@ -94,6 +96,21 @@
 
 .gradient:hover {
   background-position: 0 0;
+}
+
+.ideas {
+  padding: 15px 10px;
+  width: 93%;
+  max-width: 500px;
+  margin: auto;
+}
+
+.ideas mat-form-field {
+  width: 100%;
+}
+
+.ideas p {
+  white-space: pre-line;
 }
 
 /* Stack icon and text on narrow screens */
@@ -123,7 +140,7 @@
     height: 50px;
   }
 
-  .top-button:nth-child(n+3) {
+  .top-button:nth-child(n + 3) {
     grid-column: 1 / -1;
   }
 

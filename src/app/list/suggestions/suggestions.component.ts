@@ -46,7 +46,6 @@ export class SuggestionsComponent {
       this.results.push(suggestion);
     }
 
-    console.log(this.results);
     this.loading = false;
   }
 }

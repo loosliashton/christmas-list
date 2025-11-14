@@ -65,7 +65,10 @@
         </button>
       }
       @if (!editing && userHasSavedSetting) {
-        <button class="btn btn-light top-button" (click)="resetSpoilerPreference()">
+        <button
+          class="btn btn-light top-button"
+          (click)="resetSpoilerPreference()"
+        >
           <i
             class="fa-solid fa-arrow-rotate-right fa-lg black-icon"
             style="padding-right: 5px"
@@ -74,6 +77,30 @@
         </button>
       }
     </div>
+    @if (!(spoilers && !list?.ideas)) {
+      <div class="ideas">
+        @if (!editing) {
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Ideas</mat-panel-title>
+              </mat-expansion-panel-header>
+              <p>{{ list!.ideas }}</p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        } @else {
+          <mat-form-field>
+            <mat-label>General, non-specific ideas of things I like</mat-label>
+            <textarea
+              matInput
+              [(ngModel)]="list!.ideas"
+              cdkTextareaAutosize
+              cdkAutosizeMaxRows="10"
+            ></textarea>
+          </mat-form-field>
+        }
+      </div>
+    }
     <div class="list" [ngClass]="{ disabled: saveListLoading }">
       @for (item of list?.items; track $index; let i = $index) {
         <div class="list-row">

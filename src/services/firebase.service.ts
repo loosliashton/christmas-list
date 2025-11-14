@@ -202,7 +202,6 @@ export class FirebaseService {
 
     return getSuggestions({ list: list })
       .then((result: any) => {
-        console.log(result);
         return JSON.parse(
           result.data.response.candidates[0].content.parts[0].text,
         );

@@ -83,14 +83,14 @@
           <mat-accordion>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
-                <mat-panel-title>Ideas</mat-panel-title>
+                <mat-panel-title>Stuff I Like</mat-panel-title>
               </mat-expansion-panel-header>
               <p>{{ list!.ideas }}</p>
             </mat-expansion-panel>
           </mat-accordion>
         } @else {
           <mat-form-field>
-            <mat-label>General, non-specific ideas of things I like</mat-label>
+            <mat-label>General, less-specific ideas of things I like</mat-label>
             <textarea
               matInput
               [(ngModel)]="list!.ideas"

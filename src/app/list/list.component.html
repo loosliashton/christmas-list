@@ -28,20 +28,6 @@
         } @else {
           <button
             class="btn btn-light top-button"
-            (click)="saveListLoading ? null : saveList()"
-          >
-            @if (saveListLoading) {
-              <mat-progress-spinner
-                mode="indeterminate"
-                diameter="25"
-                [strokeWidth]="2"
-              ></mat-progress-spinner>
-            } @else {
-              <i class="fa-solid fa-save fa-md black-icon"></i> Save
-            }
-          </button>
-          <button
-            class="btn btn-light top-button"
             (click)="cancelEditListLoading ? null : editList()"
           >
             @if (cancelEditListLoading) {
@@ -52,6 +38,20 @@
               ></mat-progress-spinner>
             } @else {
               <i class="fa-solid fa-xmark fa-md black-icon"></i> Cancel
+            }
+          </button>
+          <button
+            class="btn btn-light top-button"
+            (click)="saveListLoading ? null : saveList()"
+          >
+            @if (saveListLoading) {
+              <mat-progress-spinner
+                mode="indeterminate"
+                diameter="25"
+                [strokeWidth]="2"
+              ></mat-progress-spinner>
+            } @else {
+              <i class="fa-solid fa-save fa-md black-icon"></i> Save
             }
           </button>
         }

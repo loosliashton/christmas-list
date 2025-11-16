@@ -41,8 +41,9 @@ exports.getSuggestions = functions.https.onCall(
         'Here is my current list of items. Please give me at least two suggestions (preferably more) to add to the list. \n';
       if (!list.items) return content;
       for (let item of list.items) {
-        content += `Item: ${item.name}; `;
-        content += `URL: ${item.url}\n`;
+        content += `Item: ${item.name}\n; `;
+        if (item.url) content += `URL: ${item.url}\n`;
+        if (item.description) content += `Description: ${item.description}\n`;
       }
       return content;
     }

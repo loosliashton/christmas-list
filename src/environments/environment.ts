@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 
 export const environment = {
   production: false,
+  serviceWorker: true,
 };
 
 // Your web app's Firebase configuration

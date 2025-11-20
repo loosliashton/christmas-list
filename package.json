@@ -8,8 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy": "ng build && firebase deploy",
-    "test-deploy": "ng build && firebase hosting:channel:deploy test-channel",
-    "start-pwa": "ng build && http-server -p 8080 -c-1 dist/christmas-list"
+    "test-deploy": "ng build && firebase hosting:channel:deploy test-channel"
   },
   "private": true,
   "dependencies": {

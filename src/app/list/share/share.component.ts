@@ -26,8 +26,8 @@ export class ShareComponent {
   }
 
   ngOnInit() {
-    this.getShareUrl().then((url) => {
-      this.shareUrl = `aloos.li/${url}`;
+    this.firebase.getShareUrl(this.list).then((url) => {
+      this.shareUrl = `http://aloos.li/${url}`;
       this.loading = false;
       // If share API is available, prompt share dialog
       if (navigator.share) {
@@ -40,10 +40,6 @@ export class ShareComponent {
           .catch((error) => console.log('Error sharing', error));
       }
     });
-  }
-
-  async getShareUrl(): Promise<string> {
-    return await this.firebase.getShareUrl(this.list);
   }
 
   copyToClipboard() {

@@ -29,7 +29,7 @@ export class ShareComponent {
     this.getShareUrl().then((url) => {
       this.shareUrl = `aloos.li/${url}`;
       this.loading = false;
-      // If on mobile, show share sheet
+      // If share API is available, prompt share dialog
       if (navigator.share) {
         navigator
           .share({

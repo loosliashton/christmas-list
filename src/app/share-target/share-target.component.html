@@ -1,0 +1,11 @@
+<div class="share-target-container">
+  <h1>Receiving Shared Content...</h1>
+
+  <div *ngIf="receivedTitle || receivedText || receivedUrl; else noData">
+    <p *ngIf="receivedTitle"><strong>Title:</strong> {{ receivedTitle }}</p>
+    <p *ngIf="receivedText"><strong>Text:</strong> {{ receivedText }}</p>
+    <p *ngIf="receivedUrl"><strong>URL:</strong> <a [href]="receivedUrl" target="_blank">{{ receivedUrl }}</a></p>
+  </div>
+
+  <ng-template #noData><p>No share data received.</p></ng-template>
+</div>

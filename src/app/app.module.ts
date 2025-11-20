@@ -27,11 +27,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { RecentListComponent } from './list/recent-list/recent-list.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ShareTargetComponent } from './share-target/share-target.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'my-lists', component: MyListsComponent },
   { path: 'list/:id', component: ListComponent },
+  { path: 'share-target', component: ShareTargetComponent },
 ];
 
 @NgModule({
@@ -48,6 +50,7 @@ const routes: Routes = [
     SaveListComponent,
     ShareComponent,
     ListComponent,
+    ShareTargetComponent,
   ],
   imports: [
     BrowserModule,

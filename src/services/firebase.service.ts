@@ -246,4 +246,25 @@ export class FirebaseService {
     if (!url) return false;
     return ['amazon', 'amzn.to', 'a.co'].some((domain) => url.includes(domain));
   }
+
+  async getShareUrl(list: List): Promise<string> {
+    if (list.shortUrl) return list.shortUrl;
+
+    const shortUrl = '';
+    const longUrl = window.location.href;
+
+    return fetch(
+      `https://us-central1-aloosli-88777.cloudfunctions.net/newShortUrl?&shortUrl=${shortUrl}&longUrl=${longUrl}`,
+      {
+        method: 'POST',
+      },
+    ).then(async (res) => {
+      if (res.ok) {
+        const data = await res.json();
+        const shortUrl = data.shortUrl;
+        await this.updateListShortUrl(list, shortUrl);
+        return shortUrl;
+      }
+    });
+  }
 }

@@ -2,9 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-spoiler-prompt',
-  templateUrl: './spoiler-prompt.component.html',
-  styleUrl: './spoiler-prompt.component.css',
+    selector: 'app-spoiler-prompt',
+    templateUrl: './spoiler-prompt.component.html',
+    styleUrl: './spoiler-prompt.component.css',
+    standalone: false
 })
 export class SpoilerPromptComponent {
   rememberChoice: boolean = false;

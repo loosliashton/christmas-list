@@ -9,11 +9,10 @@ import { RecentListComponent } from 'src/app/list/recent-list/recent-list.compon
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-copy-to-list',
-  standalone: true,
-  imports: [CommonModule, MatDialogModule, RecentListComponent],
-  templateUrl: './copy-to-list.component.html',
-  styleUrl: './copy-to-list.component.css',
+    selector: 'app-copy-to-list',
+    imports: [CommonModule, MatDialogModule, RecentListComponent],
+    templateUrl: './copy-to-list.component.html',
+    styleUrl: './copy-to-list.component.css'
 })
 export class CopyToListComponent implements OnInit {
   recentLists: List[] = [];

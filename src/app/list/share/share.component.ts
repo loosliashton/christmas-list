@@ -6,9 +6,10 @@ import { List } from 'src/models/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-share',
-  templateUrl: './share.component.html',
-  styleUrl: './share.component.css',
+    selector: 'app-share',
+    templateUrl: './share.component.html',
+    styleUrl: './share.component.css',
+    standalone: false
 })
 export class ShareComponent {
   shareUrl: string = '';

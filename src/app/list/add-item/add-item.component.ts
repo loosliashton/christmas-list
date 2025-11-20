@@ -6,9 +6,10 @@ import { Item } from 'src/models/item';
 import { List } from 'src/models/list';
 
 @Component({
-  selector: 'app-add-item',
-  templateUrl: './add-item.component.html',
-  styleUrl: './add-item.component.css',
+    selector: 'app-add-item',
+    templateUrl: './add-item.component.html',
+    styleUrl: './add-item.component.css',
+    standalone: false
 })
 export class AddItemComponent {
   list: List;

@@ -8,9 +8,10 @@ import { User } from '../../models/user';
 import { ChangeNameComponent } from './change-name/change-name.component';
 
 @Component({
-  selector: 'app-my-lists',
-  templateUrl: './my-lists.component.html',
-  styleUrls: ['./my-lists.component.css'],
+    selector: 'app-my-lists',
+    templateUrl: './my-lists.component.html',
+    styleUrls: ['./my-lists.component.css'],
+    standalone: false
 })
 export class MyListsComponent implements OnInit {
   email: string = '';

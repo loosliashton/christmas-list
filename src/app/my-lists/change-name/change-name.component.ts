@@ -3,9 +3,10 @@ import { FirebaseService } from 'src/services/firebase.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-change-name',
-  templateUrl: './change-name.component.html',
-  styleUrl: './change-name.component.css',
+    selector: 'app-change-name',
+    templateUrl: './change-name.component.html',
+    styleUrl: './change-name.component.css',
+    standalone: false
 })
 export class ChangeNameComponent {
   id: string;

@@ -6,10 +6,10 @@ import { List } from 'src/models/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'app-share',
-    templateUrl: './share.component.html',
-    styleUrl: './share.component.css',
-    standalone: false
+  selector: 'app-share',
+  templateUrl: './share.component.html',
+  styleUrl: './share.component.css',
+  standalone: false,
 })
 export class ShareComponent {
   shareUrl: string = '';
@@ -20,35 +20,24 @@ export class ShareComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firebase: FirebaseService,
     private clipboard: Clipboard,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
   ) {
     this.list = data.list;
   }
 
   ngOnInit() {
-    this.getShareUrl().then((url) => {
-      this.shareUrl = `aloos.li/${url}`;
+    this.firebase.getShareUrl(this.list).then((url) => {
+      this.shareUrl = `http://aloos.li/${url}`;
       this.loading = false;
-    });
-  }
-
-  async getShareUrl(): Promise<string> {
-    if (this.list.shortUrl) return this.list.shortUrl;
-
-    const shortUrl = '';
-    const longUrl = window.location.href;
-
-    return fetch(
-      `https://us-central1-aloosli-88777.cloudfunctions.net/newShortUrl?&shortUrl=${shortUrl}&longUrl=${longUrl}`,
-      {
-        method: 'POST',
-      }
-    ).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
-        const shortUrl = data.shortUrl;
-        await this.firebase.updateListShortUrl(this.list, shortUrl);
-        return shortUrl;
+      // If share API is available, prompt share dialog
+      if (navigator.share) {
+        navigator
+          .share({
+            title: 'Check out my list!',
+            text: 'Here is a link to my list:',
+            url: this.shareUrl,
+          })
+          .catch((error) => console.log('Error sharing', error));
       }
     });
   }

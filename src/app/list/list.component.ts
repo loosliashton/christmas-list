@@ -17,9 +17,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.css',
+    selector: 'app-list',
+    templateUrl: './list.component.html',
+    styleUrl: './list.component.css',
+    standalone: false
 })
 export class ListComponent {
   list: List | undefined;

@@ -5,9 +5,10 @@ import { FirebaseService } from 'src/services/firebase.service';
 import { User } from 'src/models/user';
 
 @Component({
-  selector: 'app-add-list',
-  templateUrl: './add-list.component.html',
-  styleUrl: './add-list.component.css',
+    selector: 'app-add-list',
+    templateUrl: './add-list.component.html',
+    styleUrl: './add-list.component.css',
+    standalone: false
 })
 export class AddListComponent {
   user: User;

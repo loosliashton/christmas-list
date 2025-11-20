@@ -4,9 +4,10 @@ import { List } from 'src/models/list';
 import { FirebaseService } from 'src/services/firebase.service';
 
 @Component({
-  selector: 'app-suggestions',
-  templateUrl: './suggestions.component.html',
-  styleUrl: './suggestions.component.css',
+    selector: 'app-suggestions',
+    templateUrl: './suggestions.component.html',
+    styleUrl: './suggestions.component.css',
+    standalone: false
 })
 export class SuggestionsComponent {
   list: List;

@@ -5,9 +5,10 @@ import { FirebaseService } from 'src/services/firebase.service';
 import { List } from 'src/models/list';
 
 @Component({
-  selector: 'app-save-list',
-  templateUrl: './save-list.component.html',
-  styleUrl: './save-list.component.css',
+    selector: 'app-save-list',
+    templateUrl: './save-list.component.html',
+    styleUrl: './save-list.component.css',
+    standalone: false
 })
 export class SaveListComponent implements OnInit {
   list: List;

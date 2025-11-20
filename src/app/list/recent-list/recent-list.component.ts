@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { List } from 'src/models/list';
 
 @Component({
     selector: 'app-recent-list',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './recent-list.component.html',
     styleUrl: './recent-list.component.css'
 })

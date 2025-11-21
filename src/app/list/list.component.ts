@@ -191,6 +191,8 @@ export class ListComponent {
         item: item,
         newItem: false,
       },
+      width: '90vw',
+      maxWidth: '600px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

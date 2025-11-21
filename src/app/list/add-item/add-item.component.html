@@ -7,8 +7,7 @@
         <input
           matInput
           placeholder="Enter a name..."
-          #itemName
-          [value]="name"
+          [(ngModel)]="name"
         />
       </mat-form-field>
     </div>
@@ -18,9 +17,8 @@
         <input
           matInput
           placeholder="Enter a URL..."
-          #itemUrl
-          [value]="url"
-          (focus)="itemUrl.select()"
+          [(ngModel)]="url"
+          (focus)="$event.target.select()"
         />
       </mat-form-field>
     </div>
@@ -30,8 +28,7 @@
         <textarea
           matInput
           placeholder="Quantity, color, etc"
-          #itemDetails
-          [value]="details"
+          [(ngModel)]="details"
         ></textarea>
       </mat-form-field>
     </div>
@@ -39,10 +36,7 @@
   <mat-dialog-actions>
     <button mat-button mat-dialog-close>Cancel</button>
     @if (!loading) {
-      <button
-        mat-button
-        (click)="addItem(itemName.value, itemUrl.value, itemDetails.value)"
-      >
+      <button mat-button (click)="addItem()">
         {{ item ? "Save" : "Add" }}
       </button>
     } @else {

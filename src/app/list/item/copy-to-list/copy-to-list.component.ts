@@ -1,18 +1,24 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogModule,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialog,
+} from '@angular/material/dialog';
 import { List } from 'src/models/list';
 import { Item } from 'src/models/item';
 import { FirebaseService } from 'src/services/firebase.service';
 import { RecentListComponent } from 'src/app/list/recent-list/recent-list.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddItemComponent } from '../../add-item/add-item.component';
 
 @Component({
-    selector: 'app-copy-to-list',
-    imports: [CommonModule, MatDialogModule, RecentListComponent],
-    templateUrl: './copy-to-list.component.html',
-    styleUrl: './copy-to-list.component.css'
+  selector: 'app-copy-to-list',
+  imports: [CommonModule, MatDialogModule, RecentListComponent],
+  templateUrl: './copy-to-list.component.html',
+  styleUrl: './copy-to-list.component.css',
 })
 export class CopyToListComponent implements OnInit {
   recentLists: List[] = [];
@@ -26,7 +32,9 @@ export class CopyToListComponent implements OnInit {
     private firebase: FirebaseService,
     private snackbar: MatSnackBar,
     public dialogRef: MatDialogRef<CopyToListComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { item: Item },
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { item: Item; copyImmediately: boolean },
   ) {
     this.item = data.item;
   }
@@ -56,17 +64,50 @@ export class CopyToListComponent implements OnInit {
     this.loading = false;
   }
 
-  navigateToList(list: List) {
-    this.router.navigate(['/list', list.id]);
+  async selectList(list: List) {
+    if (this.copyLoading) {
+      return;
+    }
+
+    if (this.data.copyImmediately) {
+      // Reset 'purchased' status for the new copy.
+      const itemCopy: Item = { ...this.item, purchased: false };
+      list.items?.push(itemCopy);
+      await this.saveAndClose(list);
+    } else {
+      // Open the AddItemComponent to allow for edits before copying.
+      const dialogRef = this.dialog.open(AddItemComponent, {
+        data: { list, item: this.item, newItem: true },
+        width: '90vw',
+        maxWidth: '600px',
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          // The AddItemComponent has modified the list object. Save it and navigate.
+          this.saveAndClose(list, true);
+        }
+      });
+    }
   }
 
-  async copyItemToList(list: List) {
-    list.items?.push(this.item);
+  private async saveAndClose(list: List, navigate: boolean = false) {
     this.copyLoading = true;
-    await this.firebase.saveList(list);
-    this.snackbar.open('Item copied', 'Close', { duration: 3000 });
-    this.copyLoading = false;
-    // Close this dialog and report the copied list ID
-    this.dialogRef.close(list.id);
+    try {
+      await this.firebase.saveList(list);
+      this.snackbar.open('Item added', 'Close', { duration: 3000 });
+      if (navigate) {
+        // Navigate to the list view, prevent going back to the share target.
+        this.router.navigate(['/list', list.id], { replaceUrl: true });
+      }
+      this.dialogRef.close(list.id);
+    } catch (error) {
+      console.error('Error adding item:', error);
+      this.snackbar.open('Failed to add item. Please try again.', 'Close', {
+        duration: 3000,
+      });
+    } finally {
+      this.copyLoading = false;
+    }
   }
 }

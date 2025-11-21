@@ -35,7 +35,7 @@ export class ItemComponent {
 
   openCopyToListModal() {
     const dialogRef = this.dialog.open(CopyToListComponent, {
-      data: { item: this.item },
+      data: { item: this.item, copyImmediately: true },
       width: '600px',
     });
 

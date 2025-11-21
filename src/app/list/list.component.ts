@@ -17,10 +17,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'app-list',
-    templateUrl: './list.component.html',
-    styleUrl: './list.component.css',
-    standalone: false
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrl: './list.component.css',
+  standalone: false,
 })
 export class ListComponent {
   list: List | undefined;
@@ -141,7 +141,10 @@ export class ListComponent {
     const dialogRef = this.dialog.open(AddItemComponent, {
       data: {
         list: this.list,
+        newItem: true,
       },
+      width: '90vw',
+      maxWidth: '600px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -186,7 +189,10 @@ export class ListComponent {
       data: {
         list: this.list,
         item: item,
+        newItem: false,
       },
+      width: '90vw',
+      maxWidth: '600px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {

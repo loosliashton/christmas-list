@@ -6,10 +6,10 @@ import { Item } from 'src/models/item';
 import { List } from 'src/models/list';
 
 @Component({
-    selector: 'app-add-item',
-    templateUrl: './add-item.component.html',
-    styleUrl: './add-item.component.css',
-    standalone: false
+  selector: 'app-add-item',
+  templateUrl: './add-item.component.html',
+  styleUrl: './add-item.component.css',
+  standalone: false,
 })
 export class AddItemComponent {
   list: List;
@@ -18,6 +18,7 @@ export class AddItemComponent {
   url: string = '';
   details: string = '';
   loading: boolean = false;
+  newItem: boolean = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -27,6 +28,7 @@ export class AddItemComponent {
   ) {
     this.list = data.list;
     this.item = data.item;
+    this.newItem = data.newItem;
   }
 
   ngOnInit(): void {
@@ -34,53 +36,63 @@ export class AddItemComponent {
       this.name = this.item.name;
       this.url = this.item.url;
       this.details = this.item.details;
+      if (this.newItem) {
+        this.item = undefined; // Mark item as undefined to specify adding a new item
+      }
     }
   }
 
-  async addItem(name: string, url: string, details: string) {
+  async addItem() {
     // Validate fields
-    if (!name) {
+    if (!this.name) {
       this.snackbar.open('Please enter a name', 'Close', {
         duration: 3000,
       });
       return;
     }
-    
+
     // Check if URL is valid
-    if (url && !url.startsWith('http')) {
+    if (this.url && !this.url.startsWith('http')) {
       this.snackbar.open('Please enter a valid URL', 'Close', {
         duration: 3000,
       });
       return;
     }
 
-    let camelUrl = '';
-    if (this.firebase.isAmazonUrl(url)) {
-      this.loading = true;
-      camelUrl = await this.firebase.getCamelLink(url);
+    this.loading = true;
+    try {
+      const camelUrl = this.firebase.isAmazonUrl(this.url)
+        ? await this.firebase.getCamelLink(this.url)
+        : '';
+
+      // If editing an item, update it.
+      if (this.item) {
+        this.item.name = this.name;
+        this.item.url = this.url;
+        this.item.details = this.details;
+        this.item.camelUrl = camelUrl;
+      } else {
+        // Otherwise, create a new item and add it to the list.
+        // This handles both creating a brand new item,
+        // and creating a new item pre-filled from an existing one.
+        const newItem: Item = {
+          name: this.name,
+          url: this.url,
+          purchased: false,
+          details: this.details,
+          camelUrl: camelUrl,
+        };
+        this.list.items?.push(newItem);
+      }
+
+      this.dialogRef.close(true);
+    } catch (error) {
+      console.error('Error adding item:', error);
+      this.snackbar.open('Could not add item. Please try again.', 'Close', {
+        duration: 3000,
+      });
+    } finally {
       this.loading = false;
     }
-    
-    let item: Item = {
-      name: name,
-      url: url,
-      purchased: false,
-      details: details,
-      camelUrl: camelUrl,
-    };
-
-    if (this.item) {
-      // Update the item object with the new values
-      item = this.item;
-      item.name = name;
-      item.url = url;
-      item.details = details;
-      item.camelUrl = camelUrl;
-    } else {
-      // Add the item to the list
-      this.list.items?.push(item);
-    }
-
-    this.dialogRef.close(true);
   }
 }

@@ -97,7 +97,8 @@ export class CopyToListComponent implements OnInit {
       await this.firebase.saveList(list);
       this.snackbar.open('Item added', 'Close', { duration: 3000 });
       if (navigate) {
-        this.router.navigate(['/list', list.id]);
+        // Navigate to the list view, prevent going back to the share target.
+        this.router.navigate(['/list', list.id], { replaceUrl: true });
       }
       this.dialogRef.close(list.id);
     } catch (error) {
